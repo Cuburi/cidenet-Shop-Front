@@ -2,16 +2,12 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-//import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import cidenetIcon from '../../assets/cidenet-software-a-la-medida-medellin.png';
 import { makeStyles } from '@material-ui/core';
-
-//import InputBase from '@mui/material/InputBase';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchLine from './SearchLine';
-//import { styled, alpha } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme) => ({
 	image: {
@@ -41,7 +37,11 @@ const Navbar = () => {
 					<Typography>Seccion</Typography>
 					<div className={classes.grow}></div>
 					<IconButton>
-						<img className={classes.image} src={cidenetIcon} alt="Cidenet" />
+						<img
+							className={classes.image}
+							src={cidenetIcon}
+							alt="Cidenet Shop"
+						/>
 					</IconButton>
 					<div className={classes.grow}></div>
 					<SearchLine />

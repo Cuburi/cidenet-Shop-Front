@@ -1,6 +1,7 @@
-import ImageHome from './components/ImageHome';
+import ImageHome from './Layout/ImageHome';
 import Navbar from './components/navbar/Navbar';
 import Products from './components/products/Products';
+import Footer from './Layout/Footer';
 
 function App() {
 	return (
@@ -8,6 +9,7 @@ function App() {
 			<Navbar />
 			<ImageHome />
 			<Products />
+			<Footer />
 		</div>
 	);
 }
