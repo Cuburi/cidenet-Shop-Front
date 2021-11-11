@@ -18,8 +18,9 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
-const Product = () => {
+const Product = (product) => {
 	const classes = useStyles();
+	//console.log(product);
 	return (
 		<Card
 			sx={{ maxWidth: 200, maxHeight: 486 }}
@@ -41,7 +42,7 @@ const Product = () => {
 					>
 						<Grid item>
 							<Typography variant="h5" color="text.secondary">
-								name
+								{product.name}
 							</Typography>
 						</Grid>
 					</Grid>
