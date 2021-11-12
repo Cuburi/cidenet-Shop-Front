@@ -22,7 +22,6 @@ const Footer = () => {
 					<Grid
 						item
 						xs={2}
-						justify="center"
 						container
 						justify="center"
 						alignItems="center"

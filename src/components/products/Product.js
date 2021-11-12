@@ -18,9 +18,8 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
-const Product = (product) => {
+const Product = ({ product }) => {
 	const classes = useStyles();
-	//console.log(product);
 	return (
 		<Card
 			sx={{ maxWidth: 200, maxHeight: 486 }}
