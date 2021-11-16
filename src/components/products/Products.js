@@ -1,34 +1,58 @@
 import { Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Product from './Product';
-import axios from 'axios';
+import SelectFilter from './SelectFilter';
+import { getBrands } from './services/brandService';
+import { getColors } from './services/colorService';
+import { getProducts } from './services/productsService';
 
 const Products = () => {
 	const [products, setproducts] = useState([]);
-	const baseUrl = 'http://localhost:8080';
-
-	const getProducts = async () => {
-		try {
-			const response = await axios({
-				url: `${baseUrl}/product/list`,
-				method: 'POST',
-				data: {},
-			});
-			return response;
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	const [brands, setBrands] = useState([]);
+	const [colors, setColors] = useState([]);
+	const [criteria, setCriteria] = useState({});
 
 	useEffect(() => {
 		const loadProducts = async () => {
-			const response = await getProducts();
+			const response = await getProducts(criteria);
 			if (response.status === 200) {
 				setproducts(response.data);
 			}
 		};
 		loadProducts();
+	}, [criteria]);
+
+	useEffect(() => {
+		const loadBrands = async () => {
+			const response = await getBrands();
+			if (response.status === 200) {
+				setBrands(response.data);
+			}
+		};
+
+		const loadColors = async () => {
+			const response = await getColors();
+			if (response.status === 200) {
+				setColors(response.data);
+			}
+		};
+
+		loadBrands();
+		loadColors();
 	}, []);
+
+	const handleChange = (criteria, id) => {
+		const idCriteria = id;
+		let searchCriteria;
+		if (idCriteria === 'brand') {
+			searchCriteria = { brand: criteria };
+			setCriteria(searchCriteria);
+		}
+		if (idCriteria === 'color') {
+			searchCriteria = { color: criteria };
+			setCriteria(searchCriteria);
+		}
+	};
 
 	return (
 		<div>
@@ -37,17 +61,19 @@ const Products = () => {
 				spacing={1}
 				style={{ flexWrap: 'wrap', margin: '0', width: '100%' }}
 			>
-				<Grid
-					item
-					xs={12}
-					container
-					justify="center"
-					alignItems="center"
-					direction="column"
-				>
-					<Typography variant="h5" color="primary">
-						Destacados
-					</Typography>
+				<Grid item xs={12} container>
+					<SelectFilter
+						valueCriteria={brands}
+						text={'brandsCriteria'}
+						id={'brand'}
+						handleChangeBrand={handleChange}
+					/>
+					<SelectFilter
+						valueCriteria={colors}
+						text={'colorsCriteria'}
+						id={'color'}
+						handleChangeBrand={handleChange}
+					/>
 				</Grid>
 				{products.map((product) => (
 					<Grid

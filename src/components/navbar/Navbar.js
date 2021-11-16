@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = () => {
 	const classes = useStyles();
 	return (
-		<Box sx={{ flexGrow: 1 }}>
+		<Box>
 			<AppBar position="static">
 				<Toolbar>
 					<IconButton
