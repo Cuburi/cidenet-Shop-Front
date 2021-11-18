@@ -1,15 +1,27 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Product from './Product';
 import SelectFilter from './SelectFilter';
-import { getBrands } from './services/brandService';
-import { getColors } from './services/colorService';
-import { getProducts } from './services/productsService';
+import { getBrands } from '../../services/brandService';
+import { getColors } from '../../services/colorService';
+import { getProducts } from '../../services/productsService';
+import { getSections } from '../../services/sectionService';
+import { makeStyles } from '@material-ui/core';
+import SearchLine from '../navbar/SearchLine';
+
+const useStyles = makeStyles((theme) => ({
+	grow: {
+		flexGrow: 1,
+	},
+}));
 
 const Products = () => {
+	const classes = useStyles();
+
 	const [products, setproducts] = useState([]);
 	const [brands, setBrands] = useState([]);
 	const [colors, setColors] = useState([]);
+	const [sections, setSections] = useState([]);
 	const [criteria, setCriteria] = useState({});
 
 	useEffect(() => {
@@ -37,8 +49,16 @@ const Products = () => {
 			}
 		};
 
+		const loadSections = async () => {
+			const response = await getSections();
+			if (response.status === 200) {
+				setSections(response.data);
+			}
+		};
+
 		loadBrands();
 		loadColors();
+		loadSections();
 	}, []);
 
 	const handleChange = (criteria, id) => {
@@ -52,6 +72,14 @@ const Products = () => {
 			searchCriteria = { color: criteria };
 			setCriteria(searchCriteria);
 		}
+		if (idCriteria === 'description') {
+			searchCriteria = { description: criteria };
+			setCriteria(searchCriteria);
+		}
+		if (idCriteria === 'section') {
+			searchCriteria = { section: criteria };
+			setCriteria(searchCriteria);
+		}
 	};
 
 	return (
@@ -61,20 +89,44 @@ const Products = () => {
 				spacing={1}
 				style={{ flexWrap: 'wrap', margin: '0', width: '100%' }}
 			>
-				<Grid item xs={12} container>
-					<SelectFilter
-						valueCriteria={brands}
-						text={'brandsCriteria'}
-						id={'brand'}
-						handleChangeBrand={handleChange}
-					/>
-					<SelectFilter
-						valueCriteria={colors}
-						text={'colorsCriteria'}
-						id={'color'}
-						handleChangeBrand={handleChange}
-					/>
-				</Grid>
+				<Box
+					component="span"
+					sx={{
+						width: '90%',
+						height: 64,
+
+						marginLeft: 'auto',
+						marginRight: 'auto',
+						padding: '10px',
+					}}
+				>
+					<Grid item xs={12} container>
+						<SelectFilter
+							valueCriteria={brands}
+							text={'brandsCriteria'}
+							id={'brand'}
+							handleChangeRef={handleChange}
+						/>
+
+						<SelectFilter
+							valueCriteria={colors}
+							text={'colorsCriteria'}
+							id={'color'}
+							handleChangeRef={handleChange}
+						/>
+
+						<SelectFilter
+							valueCriteria={sections}
+							text={'sectionsCriteria'}
+							id={'section'}
+							handleChangeRef={handleChange}
+						/>
+						<div className={classes.grow}></div>
+
+						<SearchLine handleChangeRef={handleChange} id={'description'} />
+					</Grid>
+				</Box>
+
 				{products.map((product) => (
 					<Grid
 						item

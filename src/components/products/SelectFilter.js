@@ -1,14 +1,14 @@
-import { InputLabel, FormControl, MenuItem, Select } from '@mui/material';
+import { InputLabel, FormControl, MenuItem, Select, Grid } from '@mui/material';
 import { useState } from 'react';
 
-const SelectFilter = ({ valueCriteria = [], id, text, handleChangeBrand }) => {
+const SelectFilter = ({ valueCriteria = [], id, text, handleChangeRef }) => {
 	const [criteria, setCriteria] = useState([]);
 	const handleChange = (event) => {
 		setCriteria(event.target.value);
-		handleChangeBrand(event.target.value, id);
+		handleChangeRef(event.target.value, id);
 	};
 	return (
-		<div>
+		<Grid sx={{ display: 'flex', alignItems: 'center' }}>
 			<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
 				<InputLabel id={text}>{id}</InputLabel>
 				<Select
@@ -29,7 +29,7 @@ const SelectFilter = ({ valueCriteria = [], id, text, handleChangeBrand }) => {
 					))}
 				</Select>
 			</FormControl>
-		</div>
+		</Grid>
 	);
 };
 export default SelectFilter;

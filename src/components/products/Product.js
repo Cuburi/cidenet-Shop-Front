@@ -1,13 +1,12 @@
-import * as React from 'react';
-
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
-//import img from './PantalonNegro.jpg';
 import { Box } from '@mui/system';
+import DetailProduct from './DetailProduct';
+import { useState } from 'react';
 
 const useStyles = makeStyles(() => ({
 	price: {
@@ -19,13 +18,22 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Product = ({ product }) => {
+	const [open, setOpen] = useState(false);
+
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
 	const classes = useStyles();
 	return (
 		<Card
 			sx={{ maxWidth: 200, maxHeight: 486 }}
 			style={{ border: 'none', boxShadow: 'none' }}
 		>
-			<CardActionArea>
+			<CardActionArea onClick={handleClickOpen}>
 				<CardMedia
 					component="img"
 					height="300"
@@ -60,13 +68,24 @@ const Product = ({ product }) => {
 						<Grid item xs={6}>
 							<Box>
 								<Typography variant="body2" color="primary">
-									{product.salePrice}
+									{new Intl.NumberFormat('es-MX', {
+										style: 'currency',
+										currency: 'MXN',
+										minimumFractionDigits: 0,
+									}).format(product.salePrice)}
 								</Typography>
 							</Box>
 						</Grid>
 					</Grid>
 				</CardContent>
 			</CardActionArea>
+			{open && (
+				<DetailProduct
+					handleCloseRef={handleClose}
+					open={open}
+					product={product}
+				/>
+			)}
 		</Card>
 	);
 };

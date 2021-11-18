@@ -1,13 +1,11 @@
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import cidenetIcon from '../../assets/cidenet-software-a-la-medida-medellin.png';
 import { makeStyles } from '@material-ui/core';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SearchLine from './SearchLine';
 
 const useStyles = makeStyles((theme) => ({
 	image: {
@@ -17,13 +15,14 @@ const useStyles = makeStyles((theme) => ({
 	grow: {
 		flexGrow: 1,
 	},
+	offset: theme.mixins.toolbar,
 }));
 
 const Navbar = () => {
 	const classes = useStyles();
 	return (
 		<Box>
-			<AppBar position="static">
+			<AppBar position="fixed">
 				<Toolbar>
 					<IconButton
 						size="large"
@@ -34,7 +33,7 @@ const Navbar = () => {
 					>
 						<MenuIcon />
 					</IconButton>
-					<Typography>Seccion</Typography>
+
 					<div className={classes.grow}></div>
 					<IconButton>
 						<img
@@ -44,12 +43,12 @@ const Navbar = () => {
 						/>
 					</IconButton>
 					<div className={classes.grow}></div>
-					<SearchLine />
 					<IconButton color="inherit">
 						<ShoppingCartIcon />
 					</IconButton>
 				</Toolbar>
 			</AppBar>
+			<div className={classes.offset}></div>
 		</Box>
 	);
 };

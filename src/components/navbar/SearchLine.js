@@ -10,7 +10,9 @@ const Search = styled('div')(({ theme }) => ({
 		backgroundColor: alpha(theme.palette.common.white, 0.25),
 	},
 	marginLeft: 0,
+	marginTop: 15,
 	width: '100%',
+	height: '50%',
 	[theme.breakpoints.up('sm')]: {
 		marginLeft: theme.spacing(1),
 		width: 'auto',
@@ -44,7 +46,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-const SearchLine = () => {
+const SearchLine = ({ handleChangeRef, id }) => {
+	const handleChange = (event) => {
+		handleChangeRef(event.target.value, id);
+	};
 	return (
 		<Search>
 			<SearchIconWrapper>
@@ -53,6 +58,7 @@ const SearchLine = () => {
 			<StyledInputBase
 				placeholder="Search…"
 				inputProps={{ 'aria-label': 'search' }}
+				onChange={handleChange}
 			/>
 		</Search>
 	);

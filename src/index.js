@@ -17,6 +17,9 @@ const theme = createTheme({
 			constrastText: '#000',
 		},
 	},
+	typography: {
+		fontFamily: ['Bebas Neue ', 'cursive'].join(','),
+	},
 });
 
 ReactDOM.render(
