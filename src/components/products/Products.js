@@ -7,7 +7,7 @@ import { getColors } from '../../services/colorService';
 import { getProducts } from '../../services/productsService';
 import { getSections } from '../../services/sectionService';
 import { makeStyles } from '@material-ui/core';
-import SearchLine from '../navbar/SearchLine';
+import SearchLine from './SearchLine';
 
 const useStyles = makeStyles((theme) => ({
 	grow: {
