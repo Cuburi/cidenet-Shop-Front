@@ -1,16 +1,24 @@
-import ImageHome from './Layout/ImageHome';
 import Navbar from './components/navbar/Navbar';
-import Products from './components/products/Products';
-import Footer from './Layout/Footer';
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import ErrorPage from './pages/ErrorPage';
+import { UserContextProvider } from './context/UserContext';
 
 function App() {
 	return (
-		<div>
-			<Navbar />
-			<ImageHome />
-			<Products />
-			<Footer />
-		</div>
+		<UserContextProvider>
+			<div>
+				<Navbar />
+				<section>
+					<Routes>
+						<Route path="/login" element={<Login />}></Route>
+						<Route path="/" element={<Home />}></Route>
+						<Route path="*" element={<ErrorPage />}></Route>
+					</Routes>
+				</section>
+			</div>
+		</UserContextProvider>
 	);
 }
 

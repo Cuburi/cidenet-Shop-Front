@@ -1,9 +1,9 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -24,9 +24,11 @@ const theme = createTheme({
 
 ReactDOM.render(
 	<React.StrictMode>
-		<ThemeProvider theme={theme}>
-			<App />
-		</ThemeProvider>
+		<BrowserRouter>
+			<ThemeProvider theme={theme}>
+				<App />
+			</ThemeProvider>
+		</BrowserRouter>
 	</React.StrictMode>,
 	document.getElementById('root')
 );
