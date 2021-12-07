@@ -6,6 +6,7 @@ import { registerUser } from '../services/registerService';
 const useUser = () => {
 	const { jwt, setJWT } = useContext(Context);
 	const [isRegister, setIsRegister] = useState(false);
+	const [message, setMessage] = useState('');
 	const [stateLogin, setStateLogin] = useState({
 		loading: false,
 		error: false,
@@ -46,12 +47,14 @@ const useUser = () => {
 				phone: phone,
 			};
 			const response = await registerUser(user);
-			console.log(user);
 			if (response) {
 				if (response.status === 201) {
 					setStateRegister({ loading: false, error: false });
 					setIsRegister(true);
+				} else {
+					setStateRegister({ loading: false, error: true });
 				}
+				setMessage(response.data.message);
 			} else {
 				setStateLogin({ loading: false, error: true });
 			}
@@ -74,6 +77,7 @@ const useUser = () => {
 		isRegisterLoading: stateRegister.loading,
 		hasRegisterError: stateRegister.error,
 		isRegister: isRegister,
+		message: message,
 	};
 };
 

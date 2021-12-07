@@ -42,7 +42,7 @@ const Register = () => {
 				.oneOf([Yup.ref('passwordConfirm')], 'Las contraseñas no son iguales ')
 				.matches(
 					/^.*(?=.{5,})((?=.*[/!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-					'Password must contain at least 8 characters, one uppercase, one number and one special case character'
+					'Contraseña debe contener minimo 5 caracteres, una minúscula,una mayúscula, un número y un caracter especial'
 				),
 			passwordConfirm: Yup.string()
 				.required('Confirmar la contraseña')
@@ -61,10 +61,11 @@ const Register = () => {
 			const phone = user.phone;
 			const address = user.address;
 			register({ name, email, password, typeId, document, phone, address });
+			console.log(message);
 		},
 	});
 
-	const { register, isRegister, isRegisterLoading, hasRegisterError } =
+	const { register, isRegister, isRegisterLoading, hasRegisterError, message } =
 		useUser();
 	const navigate = useNavigate();
 
@@ -129,7 +130,7 @@ const Register = () => {
 									margin="normal"
 									fullWidth
 									id="name"
-									label="Name"
+									label="Nombre"
 									name="name"
 									autoComplete="name"
 									autoFocus
@@ -142,7 +143,7 @@ const Register = () => {
 									margin="normal"
 									fullWidth
 									id="email"
-									label="Email Address"
+									label="Correo electronico"
 									name="email"
 									autoComplete="email"
 									autoFocus
@@ -155,7 +156,7 @@ const Register = () => {
 									margin="normal"
 									fullWidth
 									name="password"
-									label="Password"
+									label="Contraseña"
 									type="password"
 									id="password"
 									error={
@@ -169,7 +170,7 @@ const Register = () => {
 									margin="normal"
 									fullWidth
 									name="passwordConfirm"
-									label="Password"
+									label="Confirmación de contraseña"
 									type="password"
 									id="passwordConfirm"
 									error={
@@ -218,7 +219,7 @@ const Register = () => {
 											margin="normal"
 											fullWidth
 											name="document"
-											label="Document"
+											label="Número de identificación"
 											type="document"
 											id="document"
 											error={
@@ -239,7 +240,7 @@ const Register = () => {
 									margin="normal"
 									fullWidth
 									name="phone"
-									label="Phone"
+									label="Teléfono"
 									type="phone"
 									id="phone"
 									error={formik.errors.phone && Boolean(formik.errors.phone)}
@@ -277,7 +278,9 @@ const Register = () => {
 										<LinearProgress />
 									</Box>
 								)}
-								{hasRegisterError && <Notification />}
+								{hasRegisterError && (
+									<Notification type="error" tittle="Error" text={message} />
+								)}
 							</Box>
 						</form>
 					</Box>

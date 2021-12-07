@@ -7,7 +7,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const Notification = () => {
+const Notification = ({ type, tittle, text }) => {
 	const [open, setOpen] = useState(true);
 
 	const handleClose = (event, reason) => {
@@ -24,9 +24,9 @@ const Notification = () => {
 			onClose={handleClose}
 			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
 		>
-			<Alert severity="error">
-				<AlertTitle>Error</AlertTitle>
-				email y/o contraseñas incorrectas
+			<Alert severity={type}>
+				<AlertTitle>{tittle}</AlertTitle>
+				{text}
 			</Alert>
 		</Snackbar>
 	);

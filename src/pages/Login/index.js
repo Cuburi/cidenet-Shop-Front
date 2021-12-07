@@ -129,7 +129,13 @@ const Login = () => {
 										<LinearProgress />
 									</Box>
 								)}
-								{hasLoginError && <Notification />}
+								{hasLoginError && (
+									<Notification
+										type="error"
+										tittle="Error"
+										text="email y/o contraseñas incorrectas"
+									/>
+								)}
 								<Grid container>
 									<Grid item xs>
 										<Link component="button" href="#" variant="body2">
