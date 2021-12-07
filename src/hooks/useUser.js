@@ -1,10 +1,16 @@
 import { useCallback, useContext, useState } from 'react';
 import Context from '../context/UserContext';
 import { loginUser } from '../services/loginService';
+import { registerUser } from '../services/registerService';
 
 const useUser = () => {
 	const { jwt, setJWT } = useContext(Context);
+	const [isRegister, setIsRegister] = useState(false);
 	const [stateLogin, setStateLogin] = useState({
+		loading: false,
+		error: false,
+	});
+	const [stateRegister, setStateRegister] = useState({
 		loading: false,
 		error: false,
 	});
@@ -18,28 +24,56 @@ const useUser = () => {
 				if (response.status === 200) {
 					setStateLogin({ loading: false, error: false });
 					setJWT(response.data.token);
-				}
-				if (response.status === 400) {
-					console.log(response);
+					window.sessionStorage.setItem('jwt', response.data.token);
 				}
 			} else {
 				setStateLogin({ loading: false, error: true });
-				console.log('a');
 			}
 		},
 		[setJWT]
 	);
 
+	const register = useCallback(
+		async ({ name, email, password, typeId, document, address, phone }) => {
+			setStateRegister({ loading: true, error: false });
+			const user = {
+				name: name,
+				email: email,
+				password: password,
+				typeId: typeId,
+				document: document,
+				address: address,
+				phone: phone,
+			};
+			const response = await registerUser(user);
+			console.log(user);
+			if (response) {
+				if (response.status === 201) {
+					setStateRegister({ loading: false, error: false });
+					setIsRegister(true);
+				}
+			} else {
+				setStateLogin({ loading: false, error: true });
+			}
+		},
+		[]
+	);
+
 	const logout = useCallback(() => {
 		setJWT(null);
+		window.sessionStorage.setItem('jwt', '');
 	}, [setJWT]);
 
 	return {
-		isLogged: Boolean(jwt),
 		login,
 		logout,
+		register,
 		isLogginLoading: stateLogin.loading,
 		hasLoginError: stateLogin.error,
+		isLogged: Boolean(jwt),
+		isRegisterLoading: stateRegister.loading,
+		hasRegisterError: stateRegister.error,
+		isRegister: isRegister,
 	};
 };
 

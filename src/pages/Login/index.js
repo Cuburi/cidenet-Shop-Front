@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useFormik } from 'formik';
@@ -133,12 +132,16 @@ const Login = () => {
 								{hasLoginError && <Notification />}
 								<Grid container>
 									<Grid item xs>
-										<Link href="#" variant="body2">
+										<Link component="button" href="#" variant="body2">
 											Forgot password?
 										</Link>
 									</Grid>
 									<Grid item>
-										<Link href="#" variant="body2">
+										<Link
+											component="button"
+											onClick={() => navigate('/register')}
+											variant="body2"
+										>
 											{"Don't have an account? Sign Up"}
 										</Link>
 									</Grid>
