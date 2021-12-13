@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core';
 import { Box } from '@mui/system';
 import DetailProduct from './DetailProduct';
 import { useState } from 'react';
+import useProduct from '../../hooks/useProduct';
 
 const useStyles = makeStyles(() => ({
 	price: {
@@ -18,16 +19,20 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Product = ({ product }) => {
+	const { getStockSize, stock } = useProduct();
 	const [open, setOpen] = useState(false);
 
 	const handleClickOpen = () => {
 		setOpen(true);
+		getStockSize(product.id);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
 	};
+
 	const classes = useStyles();
+
 	return (
 		<Card
 			sx={{ maxWidth: 200, maxHeight: 486 }}
@@ -84,6 +89,7 @@ const Product = ({ product }) => {
 					handleCloseRef={handleClose}
 					open={open}
 					product={product}
+					stock={stock}
 				/>
 			)}
 		</Card>

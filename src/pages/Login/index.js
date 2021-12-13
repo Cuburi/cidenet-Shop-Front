@@ -20,6 +20,9 @@ import imageLogin from '../../assets/Login1.jpg';
 import useUser from '../../hooks/useUser';
 
 const Login = () => {
+	const { login, isLogged, isLogginLoading, hasLoginError } = useUser();
+	const navigate = useNavigate();
+
 	const formik = useFormik({
 		initialValues: {
 			email: '',
@@ -37,9 +40,6 @@ const Login = () => {
 			login({ userName, password });
 		},
 	});
-
-	const { login, isLogged, isLogginLoading, hasLoginError } = useUser();
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (isLogged) navigate('/');
