@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
+import Badge from '@mui/material/Badge';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import useUser from '../../hooks/useUser';
@@ -54,8 +55,10 @@ const Navbar = () => {
 						/>
 					</IconButton>
 					<div className={classes.grow}></div>
-					<IconButton color="inherit">
-						<ShoppingCartIcon />
+					<IconButton color="secondary">
+						<Badge color="secondary" badgeContent={8}>
+							<ShoppingCartIcon />
+						</Badge>
 					</IconButton>
 					{isLogged ? (
 						<IconButton color="inherit" onClick={handleLogout}>

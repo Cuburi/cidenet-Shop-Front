@@ -12,13 +12,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import { makeStyles } from '@material-ui/core';
-
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import useShoppingCart from '../../hooks/useShoppingCart';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
@@ -54,6 +55,7 @@ const DetailProduct = ({
 	product = {},
 	stock = [],
 }) => {
+	const { addItemShoppingCart } = useShoppingCart();
 	const classes = useStyles();
 	const formik = useFormik({
 		initialValues: {
@@ -66,8 +68,12 @@ const DetailProduct = ({
 				.required('Indique la cantidad')
 				.min(1, 'catidad minima 1'),
 		}),
-		onSubmit: () => {
-			console.log(formik.values);
+		onSubmit: (item) => {
+			const addItem = {
+				size: item.size,
+				acount: item.amount,
+			};
+			addItemShoppingCart(addItem);
 		},
 	});
 	return (
