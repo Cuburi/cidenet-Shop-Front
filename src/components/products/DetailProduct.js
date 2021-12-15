@@ -14,6 +14,7 @@ import Slide from '@mui/material/Slide';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+
 import useShoppingCart from '../../hooks/useShoppingCart';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -73,6 +74,7 @@ const DetailProduct = ({
 				size: item.size,
 				acount: item.amount,
 			};
+
 			addItemShoppingCart(addItem);
 		},
 	});
