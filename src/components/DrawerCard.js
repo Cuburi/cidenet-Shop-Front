@@ -9,8 +9,9 @@ import AddIcon from '@mui/icons-material/Add';
 
 import useShoppingCart from '../hooks/useShoppingCart';
 
-const DrawerShoppingCart = ({ product }) => {
-	const { addItemShoppingCart } = useShoppingCart();
+const DrawerCard = ({ product }) => {
+	const { addItemShoppingCart, removeItemShoppingCart } = useShoppingCart();
+
 	return (
 		<Card
 			sx={{ display: 'flex', maxWidth: 300, maxHeight: 270, padding: '10px' }}
@@ -33,7 +34,7 @@ const DrawerShoppingCart = ({ product }) => {
 					</Typography>
 				</CardContent>
 				<Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-					<IconButton>
+					<IconButton onClick={() => removeItemShoppingCart(product)}>
 						<RemoveIcon />
 					</IconButton>
 					<Typography
@@ -61,4 +62,4 @@ const DrawerShoppingCart = ({ product }) => {
 	);
 };
 
-export default DrawerShoppingCart;
+export default DrawerCard;

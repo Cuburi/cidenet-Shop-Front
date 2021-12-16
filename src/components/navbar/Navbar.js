@@ -14,9 +14,11 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import useUser from '../../hooks/useUser';
 import { useState } from 'react';
-import DrawerShoppingCart from '../DrawerContent';
+import DrawerCard from '../DrawerCard';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 
 import useShoppingCart from '../../hooks/useShoppingCart';
 
@@ -46,7 +48,8 @@ const Navbar = () => {
 	const classes = useStyles();
 	const navigate = useNavigate();
 	const { isLogged, logout } = useUser();
-	const { shoppingCart } = useShoppingCart();
+	const { shoppingCart, totalPrice, totalPriceShoppingCart } =
+		useShoppingCart();
 
 	const handleLogout = () => {
 		navigate('/');
@@ -54,6 +57,7 @@ const Navbar = () => {
 	};
 
 	const handleClickOpen = () => {
+		totalPriceShoppingCart();
 		setOpen(true);
 	};
 
@@ -84,7 +88,12 @@ const Navbar = () => {
 					</IconButton>
 					<div className={classes.grow}></div>
 					<IconButton color="secondary" onClick={handleClickOpen}>
-						<Badge color="secondary" badgeContent={8}>
+						<Badge
+							color="secondary"
+							badgeContent={
+								shoppingCart.length > 9 ? '9+' : shoppingCart.length
+							}
+						>
 							<ShoppingCartIcon />
 						</Badge>
 					</IconButton>
@@ -120,8 +129,33 @@ const Navbar = () => {
 					</IconButton>
 				</DrawerHeader>
 				{shoppingCart.map((item) => (
-					<DrawerShoppingCart product={item} key={item.size.idSize} />
+					<DrawerCard product={item} key={item.size.idSize} />
 				))}
+				<Divider />
+				<Grid container spacing={8}>
+					<Grid item xs={6}>
+						<Box>
+							<Typography
+								variant="h5"
+								color="primary"
+								sx={{ fontWeight: 'bold' }}
+							>
+								Total price:
+							</Typography>
+						</Box>
+					</Grid>
+					<Grid item xs={6}>
+						<Box>
+							<Typography variant="h5" color="primary">
+								{new Intl.NumberFormat('es-MX', {
+									style: 'currency',
+									currency: 'MXN',
+									minimumFractionDigits: 0,
+								}).format(totalPrice)}
+							</Typography>
+						</Box>
+					</Grid>
+				</Grid>
 			</Drawer>
 		</Box>
 	);
