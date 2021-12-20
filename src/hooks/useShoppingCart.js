@@ -1,12 +1,23 @@
 import { useCallback, useContext, useState } from 'react';
 import Context from '../context/ShoppingCartContext';
-import { updateStock } from '../services/stockService';
+import { updateStock, searchDetailStock } from '../services/detailSizeService';
 
 const useShoppingCart = () => {
 	const { shoppingCart, setShoppingCart } = useContext(Context);
 	const [totalPrice, setTotalPrice] = useState(0);
+	const [state, setState] = useState({});
 
 	const addItemShoppingCart = (item) => {
+		seatchStockFetch(item.size.idProduct, item.size.idSize);
+		/*const itemInCart = shoppingCart.find(
+			(itemInCart) =>
+				itemInCart.size.idProduct === item.size.idProduct &&
+				itemInCart.size.idSize === item.size.idSize
+		);
+		console.log(itemInCart.acount + '||' + item.size.stock);
+		//if (itemInCart.acount <= item.size.stock) {
+		console.log('siu');*/
+		console.log(state);
 		if (!existItemInShoppingCart(item)) {
 			const newShoppingCart = [...shoppingCart, item];
 			setShoppingCart(newShoppingCart);
@@ -33,10 +44,17 @@ const useShoppingCart = () => {
 		}
 		totalPriceShoppingCart();
 		updateStockFetch(item.size.idProduct, item.size.idSize, item.acount);
+		//}
 	};
 
 	const updateStockFetch = useCallback(async (idProduct, idSize, value) => {
-		const response = await updateStock(idProduct, idSize, value);
+		await updateStock(idProduct, idSize, value);
+	}, []);
+
+	const seatchStockFetch = useCallback(async (idProduct, idSize, value) => {
+		const response = await searchDetailStock(idProduct, idSize);
+		// 	console.log(response);
+		setState(response.data);
 	}, []);
 
 	const existItemInShoppingCart = (item) => {
@@ -67,6 +85,7 @@ const useShoppingCart = () => {
 		);
 		deleteItemShoppingCar();
 		totalPriceShoppingCart();
+		updateStockFetch(item.size.idProduct, item.size.idSize, -1);
 	};
 
 	const deleteItemShoppingCar = () => {
@@ -84,17 +103,15 @@ const useShoppingCart = () => {
 		shoppingCart.forEach((item) => {
 			totalHelper += item.acount * item.size.product.salePrice;
 		});
-		console.log(totalHelper);
 		setTotalPrice(totalHelper);
-		console.log(totalHelper);
 	};
 
 	return {
 		addItemShoppingCart,
 		removeItemShoppingCart,
 		totalPriceShoppingCart,
-		totalPrice,
-		shoppingCart,
+		totalPrice: totalPrice,
+		shoppingCart: shoppingCart,
 	};
 };
 

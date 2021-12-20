@@ -13,7 +13,7 @@ import Badge from '@mui/material/Badge';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import useUser from '../../hooks/useUser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DrawerCard from '../DrawerCard';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
@@ -57,13 +57,15 @@ const Navbar = () => {
 	};
 
 	const handleClickOpen = () => {
-		totalPriceShoppingCart();
 		setOpen(true);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
 	};
+	useEffect(() => {
+		totalPriceShoppingCart();
+	}, [totalPriceShoppingCart]);
 	return (
 		<Box>
 			<AppBar position="fixed">
@@ -117,6 +119,7 @@ const Navbar = () => {
 					flexShrink: 0,
 					'& .MuiDrawer-paper': {
 						width: drawerWidth,
+						boxSizing: 'border-box',
 					},
 				}}
 				variant="persistent"
