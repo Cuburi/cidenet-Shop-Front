@@ -17,7 +17,7 @@ export const getStock = async (id) => {
 export const updateStock = async (idProduct, idSize, value) => {
 	try {
 		const response = await axios({
-			url: `${baseUrl}/sizeStock/update/${idSize}/${idProduct}/${value}`,
+			url: `${baseUrl}/sizeStock/newStock/${idSize}/${idProduct}/${value}`,
 			method: 'PUT',
 		});
 		return response;
@@ -29,7 +29,7 @@ export const updateStock = async (idProduct, idSize, value) => {
 export const searchDetailStock = async (idProduct, idSize) => {
 	try {
 		const response = await axios({
-			url: `${baseUrl}/sizeStock/search/${idSize}/${idProduct}`,
+			url: `${baseUrl}/sizeStock/${idSize}/${idProduct}`,
 			method: 'GET',
 		});
 		return response;

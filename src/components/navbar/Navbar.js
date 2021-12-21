@@ -143,7 +143,7 @@ const Navbar = () => {
 				<Divider />
 				<Grid style={{ maxHeight: '100vh', overflow: 'auto' }}>
 					{shoppingCart.map((item) => (
-						<DrawerCard product={item} key={item.size.idSize} />
+						<DrawerCard product={item} />
 					))}
 				</Grid>
 

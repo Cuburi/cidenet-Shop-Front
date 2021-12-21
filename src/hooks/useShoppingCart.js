@@ -33,7 +33,6 @@ const useShoppingCart = () => {
 			);
 		}
 		totalPriceShoppingCart();
-		updateStockFetch(item.size.idProduct, item.size.idSize, item.acount);
 	};
 
 	const updateStockFetch = useCallback(async (idProduct, idSize, value) => {
@@ -42,6 +41,7 @@ const useShoppingCart = () => {
 
 	const searchStockFetch = useCallback(async (idProduct, idSize, value) => {
 		const response = await searchDetailStock(idProduct, idSize);
+		console.log(response);
 	}, []);
 
 	const existItemInShoppingCart = (item) => {

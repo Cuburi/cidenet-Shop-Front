@@ -89,7 +89,17 @@ const Products = () => {
 				spacing={1}
 				style={{ flexWrap: 'wrap', margin: '0', width: '100%' }}
 			>
-				<Grid item container sx={6}>
+				<Grid
+					item
+					container
+					sx={{
+						width: '90%',
+
+						marginLeft: 'auto',
+						marginRight: 'auto',
+						padding: '10px',
+					}}
+				>
 					<SelectFilter
 						valueCriteria={brands}
 						text={'Marcas'}
