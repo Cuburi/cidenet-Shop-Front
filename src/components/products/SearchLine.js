@@ -36,11 +36,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 		// vertical padding + font size from searchIcon
 		paddingLeft: `calc(1em + ${theme.spacing(4)})`,
 		transition: theme.transitions.create('width'),
-		width: '100%',
+		swidth: '100%',
 		[theme.breakpoints.up('sm')]: {
-			width: '12ch',
+			width: '20ch',
 			'&:focus': {
-				width: '20ch',
+				width: '30ch',
 			},
 		},
 	},
@@ -56,7 +56,7 @@ const SearchLine = ({ handleChangeRef, id }) => {
 				<SearchIcon />
 			</SearchIconWrapper>
 			<StyledInputBase
-				placeholder="Search…"
+				placeholder="Buscar…"
 				inputProps={{ 'aria-label': 'search' }}
 				onChange={handleChange}
 			/>

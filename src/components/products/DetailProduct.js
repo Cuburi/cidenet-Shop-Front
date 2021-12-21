@@ -30,13 +30,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	img: {
 		margin: 'auto',
-		marginLeft: '100px',
 		display: 'block',
-		maxWidth: '500px',
+		maxWidth: '100%',
 		maxHeight: '500px',
 	},
 	detail: {
-		minWidth: '768px',
+		minWidth: '50%',
 		flex: '1',
 		padding: '0 50px 0 40px',
 		textAlign: 'lef',
@@ -66,14 +65,17 @@ const DetailProduct = ({
 		onSubmit: (item) => {
 			const addItem = {
 				size: item.size,
-				acount: item.amount,
+				acount:
+					formik.values.amount > formik.values.size.stock
+						? formik.values.size.stock
+						: formik.values.amount,
 			};
 			addItemShoppingCart(addItem);
 			handleCloseRef();
 		},
 	});
 	return (
-		<div className={classes.root}>
+		<Grid className={classes.root}>
 			<AppBar sx={{ position: 'relative' }}>
 				<Toolbar>
 					<IconButton
@@ -86,7 +88,7 @@ const DetailProduct = ({
 					</IconButton>
 				</Toolbar>
 			</AppBar>
-			<Grid container spacing={2}>
+			<Grid container>
 				<Grid item>
 					<Box className={classes.paper}>
 						<img
@@ -120,23 +122,17 @@ const DetailProduct = ({
 									minimumFractionDigits: 0,
 								}).format(product.salePrice)}`}
 							</Typography>
-							<Typography
-								variant="p"
-								sx={{
-									marginBottom: 5,
-									fontFamily: 'Lato,sans-serif',
-									textDecorationLine: 'underline',
-								}}
-							>
-								{product.description}
-							</Typography>
+
+							<Typography variant="body1">{product.description}</Typography>
 							<Typography variant="h6" sx={{ marginBottom: 5, marginTop: 5 }}>
 								{`Marca: ${product.brand.name}`}
 							</Typography>
 							<Typography variant="h6" sx={{ marginBottom: 5 }}>
 								{`Color: ${product.color.name}`}
 							</Typography>
+						</Grid>
 
+						<Grid item>
 							<form onSubmit={formik.handleSubmit}>
 								<Grid
 									container
@@ -200,7 +196,7 @@ const DetailProduct = ({
 					</Grid>
 				</Grid>
 			</Grid>
-		</div>
+		</Grid>
 	);
 };
 

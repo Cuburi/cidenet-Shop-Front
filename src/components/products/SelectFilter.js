@@ -10,7 +10,7 @@ const SelectFilter = ({ valueCriteria = [], id, text, handleChangeRef }) => {
 	return (
 		<Grid sx={{ display: 'flex', alignItems: 'center' }}>
 			<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-				<InputLabel id={text}>{id}</InputLabel>
+				<InputLabel id={text}>{text}</InputLabel>
 				<Select
 					labelId={text}
 					id={id}

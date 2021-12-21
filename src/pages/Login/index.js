@@ -83,7 +83,7 @@ const Login = () => {
 							<LockOutlinedIcon />
 						</Avatar>
 						<Typography component="h1" variant="h5">
-							Sign in
+							iniciar sesión
 						</Typography>
 						<form onSubmit={formik.handleSubmit}>
 							<Box noValidate sx={{ mt: 1 }}>
@@ -92,7 +92,7 @@ const Login = () => {
 									margin="normal"
 									fullWidth
 									id="email"
-									label="Email Address"
+									label="Correo electronico"
 									name="email"
 									autoComplete="email"
 									autoFocus
@@ -105,7 +105,7 @@ const Login = () => {
 									margin="normal"
 									fullWidth
 									name="password"
-									label="Password"
+									label="Contraseña"
 									type="password"
 									id="password"
 									error={
@@ -122,7 +122,7 @@ const Login = () => {
 									sx={{ mt: 3, mb: 2 }}
 									color="primary"
 								>
-									Sign In
+									iniciar sesión
 								</Button>
 								{isLogginLoading && (
 									<Box sx={{ width: '100%' }}>
@@ -139,7 +139,7 @@ const Login = () => {
 								<Grid container>
 									<Grid item xs>
 										<Link component="button" href="#" variant="body2">
-											Forgot password?
+											¿Olvidaste tu contraseña?
 										</Link>
 									</Grid>
 									<Grid item>
@@ -148,7 +148,7 @@ const Login = () => {
 											onClick={() => navigate('/register')}
 											variant="body2"
 										>
-											{"Don't have an account? Sign Up"}
+											¿No tienes una cuenta? Registrate
 										</Link>
 									</Grid>
 								</Grid>

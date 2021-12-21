@@ -19,6 +19,7 @@ import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 
 import useShoppingCart from '../../hooks/useShoppingCart';
 
@@ -33,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 	},
 	offset: theme.mixins.toolbar,
+	shoppingCart: {
+		padding: '28px 20px 16px 20px',
+	},
 }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -101,12 +105,12 @@ const Navbar = () => {
 					</IconButton>
 					{isLogged ? (
 						<IconButton color="inherit" onClick={handleLogout}>
-							<Typography variant="body1">Logout</Typography>
+							<Typography variant="body1">Salir</Typography>
 							<LogoutIcon />
 						</IconButton>
 					) : (
 						<IconButton color="inherit" onClick={() => navigate('/login')}>
-							<Typography variant="body1">Login</Typography>
+							<Typography variant="body1">Mi cuenta</Typography>
 							<LoginIcon />
 						</IconButton>
 					)}
@@ -127,15 +131,24 @@ const Navbar = () => {
 				open={open}
 			>
 				<DrawerHeader>
+					<Grid item xs={2} sm={4} md={4}></Grid>
+					<Grid item xs={2} sm={4} md={4}>
+						<Typography variant="h6">Mi carrito</Typography>
+					</Grid>
+					<div className={classes.grow}></div>
 					<IconButton onClick={handleClose}>
 						<CloseIcon />
 					</IconButton>
 				</DrawerHeader>
-				{shoppingCart.map((item) => (
-					<DrawerCard product={item} key={item.size.idSize} />
-				))}
 				<Divider />
-				<Grid container spacing={8}>
+				<Grid style={{ maxHeight: '100vh', overflow: 'auto' }}>
+					{shoppingCart.map((item) => (
+						<DrawerCard product={item} key={item.size.idSize} />
+					))}
+				</Grid>
+
+				<Divider />
+				<Grid container x className={classes.shoppingCart}>
 					<Grid item xs={6}>
 						<Box>
 							<Typography
@@ -158,6 +171,15 @@ const Navbar = () => {
 							</Typography>
 						</Box>
 					</Grid>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						sx={{ mt: 3, mb: 2 }}
+						color="primary"
+					>
+						Añadir a mi carrito
+					</Button>
 				</Grid>
 			</Drawer>
 		</Box>

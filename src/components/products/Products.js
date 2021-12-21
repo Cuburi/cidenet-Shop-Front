@@ -89,43 +89,32 @@ const Products = () => {
 				spacing={1}
 				style={{ flexWrap: 'wrap', margin: '0', width: '100%' }}
 			>
-				<Box
-					component="span"
-					sx={{
-						width: '90%',
-						height: 64,
+				<Grid item container sx={6}>
+					<SelectFilter
+						valueCriteria={brands}
+						text={'Marcas'}
+						id={'brand'}
+						handleChangeRef={handleChange}
+					/>
 
-						marginLeft: 'auto',
-						marginRight: 'auto',
-						padding: '10px',
-					}}
-				>
-					<Grid item xs={12} container>
-						<SelectFilter
-							valueCriteria={brands}
-							text={'brandsCriteria'}
-							id={'brand'}
-							handleChangeRef={handleChange}
-						/>
+					<SelectFilter
+						valueCriteria={colors}
+						text={'Colores'}
+						id={'color'}
+						handleChangeRef={handleChange}
+					/>
 
-						<SelectFilter
-							valueCriteria={colors}
-							text={'colorsCriteria'}
-							id={'color'}
-							handleChangeRef={handleChange}
-						/>
+					<SelectFilter
+						valueCriteria={sections}
+						text={'Secciones'}
+						id={'section'}
+						handleChangeRef={handleChange}
+					/>
 
-						<SelectFilter
-							valueCriteria={sections}
-							text={'sectionsCriteria'}
-							id={'section'}
-							handleChangeRef={handleChange}
-						/>
-						<div className={classes.grow}></div>
+					<div className={classes.grow}></div>
 
-						<SearchLine handleChangeRef={handleChange} id={'description'} />
-					</Grid>
-				</Box>
+					<SearchLine handleChangeRef={handleChange} id={'description'} />
+				</Grid>
 
 				{products.map((product) => (
 					<Grid

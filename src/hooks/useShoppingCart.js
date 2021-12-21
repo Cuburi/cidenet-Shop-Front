@@ -5,19 +5,9 @@ import { updateStock, searchDetailStock } from '../services/detailSizeService';
 const useShoppingCart = () => {
 	const { shoppingCart, setShoppingCart } = useContext(Context);
 	const [totalPrice, setTotalPrice] = useState(0);
-	const [state, setState] = useState({});
 
 	const addItemShoppingCart = (item) => {
-		seatchStockFetch(item.size.idProduct, item.size.idSize);
-		/*const itemInCart = shoppingCart.find(
-			(itemInCart) =>
-				itemInCart.size.idProduct === item.size.idProduct &&
-				itemInCart.size.idSize === item.size.idSize
-		);
-		console.log(itemInCart.acount + '||' + item.size.stock);
-		//if (itemInCart.acount <= item.size.stock) {
-		console.log('siu');*/
-		console.log(state);
+		searchStockFetch(item.size.idProduct, item.size.idSize);
 		if (!existItemInShoppingCart(item)) {
 			const newShoppingCart = [...shoppingCart, item];
 			setShoppingCart(newShoppingCart);
@@ -44,17 +34,14 @@ const useShoppingCart = () => {
 		}
 		totalPriceShoppingCart();
 		updateStockFetch(item.size.idProduct, item.size.idSize, item.acount);
-		//}
 	};
 
 	const updateStockFetch = useCallback(async (idProduct, idSize, value) => {
 		await updateStock(idProduct, idSize, value);
 	}, []);
 
-	const seatchStockFetch = useCallback(async (idProduct, idSize, value) => {
+	const searchStockFetch = useCallback(async (idProduct, idSize, value) => {
 		const response = await searchDetailStock(idProduct, idSize);
-		// 	console.log(response);
-		setState(response.data);
 	}, []);
 
 	const existItemInShoppingCart = (item) => {
