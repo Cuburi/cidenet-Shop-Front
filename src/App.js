@@ -1,11 +1,15 @@
-import Navbar from './components/navbar/Navbar';
 import { Routes, Route } from 'react-router-dom';
+
 import { UserContextProvider } from './context/UserContext';
 import { ShoppingCartContextProvider } from './context/ShoppingCartContext';
+
 import Login from './pages/Login';
-import Home from './pages/Home';
 import ErrorPage from './pages/ErrorPage';
 import Register from './pages/Register';
+import Checkout from './pages/Checkout';
+import Home from './pages/Home';
+
+import Navbar from './components/navbar/Navbar';
 
 function App() {
 	return (
@@ -19,6 +23,7 @@ function App() {
 							<Route path="/" element={<Home />}></Route>
 							<Route path="*" element={<ErrorPage />}></Route>
 							<Route path="/register" element={<Register />}></Route>
+							<Route path="/checkout" element={<Checkout />}></Route>
 						</Routes>
 					</section>
 				</div>

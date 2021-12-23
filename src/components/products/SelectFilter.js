@@ -1,4 +1,9 @@
-import { InputLabel, FormControl, MenuItem, Select, Grid } from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Grid from '@mui/material/Grid';
+
 import { useState } from 'react';
 
 const SelectFilter = ({ valueCriteria = [], id, text, handleChangeRef }) => {

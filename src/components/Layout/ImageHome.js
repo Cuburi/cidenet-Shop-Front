@@ -1,5 +1,5 @@
-import { Grid } from '@mui/material';
-import imageHome from '../assets/image-home.png';
+import Grid from '@mui/material/Grid';
+import imageHome from '../../assets/image-home.png';
 
 const ImageHome = () => {
 	return (

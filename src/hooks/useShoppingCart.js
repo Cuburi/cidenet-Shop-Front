@@ -1,13 +1,16 @@
 import { useCallback, useContext, useState } from 'react';
+
 import Context from '../context/ShoppingCartContext';
-import { updateStock, searchDetailStock } from '../services/detailSizeService';
+import ContextUser from '../context/UserContext';
+
+import { updateStock } from '../services/detailSizeService';
 
 const useShoppingCart = () => {
 	const { shoppingCart, setShoppingCart } = useContext(Context);
+	const { jwt, setJWT } = useContext(ContextUser);
 	const [totalPrice, setTotalPrice] = useState(0);
 
 	const addItemShoppingCart = (item) => {
-		searchStockFetch(item.size.idProduct, item.size.idSize);
 		if (!existItemInShoppingCart(item)) {
 			const newShoppingCart = [...shoppingCart, item];
 			setShoppingCart(newShoppingCart);
@@ -19,7 +22,8 @@ const useShoppingCart = () => {
 			const newShoppingCart = shoppingCart.map((itemInCart) => {
 				if (
 					itemInCart.size.idProduct === item.size.idProduct &&
-					itemInCart.size.idSize === item.size.idSize
+					itemInCart.size.idSize === item.size.idSize &&
+					itemInCart.acount + item.acount <= item.size.stock
 				) {
 					itemInCart.acount += item.acount;
 				}
@@ -34,15 +38,6 @@ const useShoppingCart = () => {
 		}
 		totalPriceShoppingCart();
 	};
-
-	const updateStockFetch = useCallback(async (idProduct, idSize, value) => {
-		await updateStock(idProduct, idSize, value);
-	}, []);
-
-	const searchStockFetch = useCallback(async (idProduct, idSize, value) => {
-		const response = await searchDetailStock(idProduct, idSize);
-		console.log(response);
-	}, []);
 
 	const existItemInShoppingCart = (item) => {
 		const itemInCart = shoppingCart.find(
@@ -72,7 +67,6 @@ const useShoppingCart = () => {
 		);
 		deleteItemShoppingCar();
 		totalPriceShoppingCart();
-		updateStockFetch(item.size.idProduct, item.size.idSize, -1);
 	};
 
 	const deleteItemShoppingCar = () => {
@@ -93,10 +87,26 @@ const useShoppingCart = () => {
 		setTotalPrice(totalHelper);
 	};
 
+	const removeShoppingCart = () => {
+		window.localStorage.setItem('shoppingCart', '[]');
+	};
+
+	const newStock = () => {
+		shoppingCart.map((item) =>
+			updateStockFetch(item.size.idProduct, item.size.idSize, item.acount)
+		);
+	};
+
+	const updateStockFetch = useCallback(async (idProduct, idSize, value) => {
+		await updateStock(idProduct, idSize, value, jwt);
+	}, []);
+
 	return {
 		addItemShoppingCart,
 		removeItemShoppingCart,
 		totalPriceShoppingCart,
+		removeShoppingCart,
+		newStock,
 		totalPrice: totalPrice,
 		shoppingCart: shoppingCart,
 	};

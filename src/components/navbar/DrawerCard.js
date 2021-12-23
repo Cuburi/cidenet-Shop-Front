@@ -8,7 +8,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import Grid from '@mui/material/Grid';
 
-import useShoppingCart from '../hooks/useShoppingCart';
+import useShoppingCart from '../../hooks/useShoppingCart';
 
 const DrawerCard = ({ product }) => {
 	const { addItemShoppingCart, removeItemShoppingCart } = useShoppingCart();

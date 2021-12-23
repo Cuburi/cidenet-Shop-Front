@@ -1,6 +1,6 @@
-import ImageHome from '../../Layout/ImageHome';
+import ImageHome from '../../components/Layout/ImageHome';
 import Products from '../../components/products/Products';
-import Footer from '../../Layout/Footer';
+import Footer from '../../components/Layout/Footer';
 
 const Home = () => {
 	return (

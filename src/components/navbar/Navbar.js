@@ -1,27 +1,29 @@
+import { makeStyles } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import cidenetIcon from '../../assets/cidenet-software-a-la-medida-medellin.png';
-import { makeStyles } from '@material-ui/core';
-import { styled } from '@mui/material/styles';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import Badge from '@mui/material/Badge';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
-import useUser from '../../hooks/useUser';
-import { useEffect, useState } from 'react';
-import DrawerCard from '../DrawerCard';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import useUser from '../../hooks/useUser';
 import useShoppingCart from '../../hooks/useShoppingCart';
+
+import DrawerCard from './DrawerCard';
+import cidenetIcon from '../../assets/cidenet-software-a-la-medida-medellin.png';
 
 const drawerWidth = 260;
 
@@ -58,6 +60,11 @@ const Navbar = () => {
 	const handleLogout = () => {
 		navigate('/');
 		logout();
+	};
+
+	const handleCheckout = () => {
+		setOpen(false);
+		navigate('/checkout');
 	};
 
 	const handleClickOpen = () => {
@@ -143,12 +150,15 @@ const Navbar = () => {
 				<Divider />
 				<Grid style={{ maxHeight: '100vh', overflow: 'auto' }}>
 					{shoppingCart.map((item) => (
-						<DrawerCard product={item} />
+						<DrawerCard
+							product={item}
+							key={item.size.idProduct + '' + item.size.idSize}
+						/>
 					))}
 				</Grid>
 
 				<Divider />
-				<Grid container x className={classes.shoppingCart}>
+				<Grid container className={classes.shoppingCart}>
 					<Grid item xs={6}>
 						<Box>
 							<Typography
@@ -172,13 +182,13 @@ const Navbar = () => {
 						</Box>
 					</Grid>
 					<Button
-						type="submit"
 						fullWidth
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 						color="primary"
+						onClick={() => handleCheckout('/checkout')}
 					>
-						Añadir a mi carrito
+						Ir a pagar
 					</Button>
 				</Grid>
 			</Drawer>

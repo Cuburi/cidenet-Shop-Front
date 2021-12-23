@@ -1,5 +1,7 @@
 import { useCallback, useContext, useState } from 'react';
+
 import Context from '../context/UserContext';
+
 import { loginUser } from '../services/loginService';
 import { registerUser } from '../services/registerService';
 

@@ -1,7 +1,3 @@
-import { useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,10 +11,15 @@ import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import FormControl from '@mui/material/FormControl';
 
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+import useUser from '../../hooks/useUser';
+
 import Notification from '../../components/Notification';
 import imageRegister from '../../assets/Login.jpg';
-import useUser from '../../hooks/useUser';
-import { useEffect } from 'react';
 
 const Register = () => {
 	const formik = useFormik({

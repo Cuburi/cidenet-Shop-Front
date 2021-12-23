@@ -1,6 +1,6 @@
 import { useState, createContext } from 'react';
 
-const Context = createContext(null);
+const Context = createContext({});
 
 export function ShoppingCartContextProvider({ children }) {
 	const InitialShoppingCart =

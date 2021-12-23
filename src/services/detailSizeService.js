@@ -14,11 +14,14 @@ export const getStock = async (id) => {
 	}
 };
 
-export const updateStock = async (idProduct, idSize, value) => {
+export const updateStock = async (idProduct, idSize, value, jwt) => {
 	try {
 		const response = await axios({
 			url: `${baseUrl}/sizeStock/newStock/${idSize}/${idProduct}/${value}`,
 			method: 'PUT',
+			headers: {
+				Authorization: `Bearer ${jwt}`,
+			},
 		});
 		return response;
 	} catch (error) {

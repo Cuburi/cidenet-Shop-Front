@@ -1,8 +1,3 @@
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,9 +10,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+import useUser from '../../hooks/useUser';
+
 import Notification from '../../components/Notification';
 import imageLogin from '../../assets/Login1.jpg';
-import useUser from '../../hooks/useUser';
 
 const Login = () => {
 	const { login, isLogged, isLogginLoading, hasLoginError } = useUser();
@@ -42,7 +43,7 @@ const Login = () => {
 	});
 
 	useEffect(() => {
-		if (isLogged) navigate('/');
+		if (isLogged) navigate(-1);
 	}, [isLogged, navigate]);
 
 	return (

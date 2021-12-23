@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+
 import { getStock } from '../services/detailSizeService';
 
 const useProduct = () => {

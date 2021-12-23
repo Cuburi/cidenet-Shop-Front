@@ -1,17 +1,19 @@
-import * as React from 'react';
-
+import { makeStyles } from '@material-ui/core';
 import Slide from '@mui/material/Slide';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, Grid } from '@mui/material';
-import { makeStyles } from '@material-ui/core';
-import { Box } from '@mui/system';
-import DetailProduct from './DetailProduct';
-import { useState } from 'react';
-import useProduct from '../../hooks/useProduct';
+import Grid from '@mui/material/Grid';
+import CardActionArea from '@mui/material/CardActionArea';
+import Box from '@mui/system/Box';
 import Dialog from '@mui/material/Dialog';
+
+import * as React from 'react';
+import { useState } from 'react';
+
+import useProduct from '../../hooks/useProduct';
+import DetailProduct from './DetailProduct';
 
 const useStyles = makeStyles(() => ({
 	price: {
@@ -75,7 +77,7 @@ const Product = ({ product }) => {
 										color="primary"
 										sx={{ fontWeight: 'bold' }}
 									>
-										Price
+										Precio
 									</Typography>
 								</Box>
 							</Grid>

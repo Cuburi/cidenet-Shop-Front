@@ -1,7 +1,9 @@
-import { Box } from '@mui/system';
-import cidenetIcon from '../assets/cidenet-software-a-la-medida-medellin.png';
 import { makeStyles } from '@material-ui/core';
-import { Grid, IconButton } from '@mui/material';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+
+import cidenetIcon from '../../assets/cidenet-software-a-la-medida-medellin.png';
 
 const useStyles = makeStyles(() => ({
 	image: {
