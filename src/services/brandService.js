@@ -1,13 +1,8 @@
-import axios from 'axios';
-
-const baseUrl = 'http://localhost:8080';
+import { instanceAxios } from './axiosHelper';
 
 export const getBrands = async () => {
 	try {
-		const response = await axios({
-			url: `${baseUrl}/brand/list`,
-			method: 'GET',
-		});
+		const response = await instanceAxios.get('/brand/list');
 		return response;
 	} catch (error) {
 		console.log(error);

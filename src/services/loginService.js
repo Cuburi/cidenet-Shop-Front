@@ -1,14 +1,8 @@
-import axios from 'axios';
-
-const baseUrl = 'http://localhost:8080';
+import { instanceAxios } from './axiosHelper';
 
 export const loginUser = async (user) => {
 	try {
-		const response = await axios({
-			url: `${baseUrl}/auth/login`,
-			method: 'POST',
-			data: user,
-		});
+		const response = await instanceAxios.post('/auth/login', user);
 		return response;
 	} catch (error) {
 		console.log(error);

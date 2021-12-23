@@ -88,6 +88,7 @@ const useShoppingCart = () => {
 	};
 
 	const removeShoppingCart = () => {
+		setShoppingCart([]);
 		window.localStorage.setItem('shoppingCart', '[]');
 	};
 

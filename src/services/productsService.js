@@ -1,14 +1,8 @@
-import axios from 'axios';
-
-const baseUrl = 'http://localhost:8080';
+import { instanceAxios } from './axiosHelper';
 
 export const getProducts = async (criteria) => {
 	try {
-		const response = await axios({
-			url: `${baseUrl}/product/list`,
-			method: 'POST',
-			data: criteria,
-		});
+		const response = await instanceAxios.post('/product/list', criteria);
 		return response;
 	} catch (error) {
 		console.log(error);

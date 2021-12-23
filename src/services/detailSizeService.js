@@ -1,13 +1,8 @@
-import axios from 'axios';
-
-const baseUrl = 'http://localhost:8080';
+import { instanceAxios } from './axiosHelper';
 
 export const getStock = async (id) => {
 	try {
-		const response = await axios({
-			url: `${baseUrl}/sizeStock/stock/${id}`,
-			method: 'GET',
-		});
+		const response = await instanceAxios.get(`/sizeStock/stock/${id}`);
 		return response;
 	} catch (error) {
 		console.log(error);
@@ -16,25 +11,9 @@ export const getStock = async (id) => {
 
 export const updateStock = async (idProduct, idSize, value, jwt) => {
 	try {
-		const response = await axios({
-			url: `${baseUrl}/sizeStock/newStock/${idSize}/${idProduct}/${value}`,
-			method: 'PUT',
-			headers: {
-				Authorization: `Bearer ${jwt}`,
-			},
-		});
-		return response;
-	} catch (error) {
-		console.log(error);
-	}
-};
-
-export const searchDetailStock = async (idProduct, idSize) => {
-	try {
-		const response = await axios({
-			url: `${baseUrl}/sizeStock/${idSize}/${idProduct}`,
-			method: 'GET',
-		});
+		const response = await instanceAxios.put(
+			`/sizeStock/newStock/${idSize}/${idProduct}/${value}`
+		);
 		return response;
 	} catch (error) {
 		console.log(error);
