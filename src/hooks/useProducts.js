@@ -57,12 +57,17 @@ const useProducts = () => {
 		}
 	};
 
+	const handleChangeClick = (value) => {
+		handleChange(value, 'section');
+	};
+
 	return {
 		loadProducts,
 		loadBrands,
 		loadColors,
 		loadSections,
 		handleChange,
+		handleChangeClick,
 		products: products,
 		brands: brands,
 		colors: colors,

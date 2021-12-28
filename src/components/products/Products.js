@@ -1,12 +1,13 @@
 import { Grid } from '@mui/material';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useProducts from '../../hooks/useProducts';
 
 import Product from './Product';
 import SelectFilter from './SelectFilter';
 import { makeStyles } from '@material-ui/core';
 import SearchLine from './SearchLine';
+import ButtonBases from '../../components/ButtonGroup';
 
 const useStyles = makeStyles((theme) => ({
 	grow: {
@@ -23,6 +24,7 @@ const Products = () => {
 		loadColors,
 		loadSections,
 		handleChange,
+		handleChangeClick,
 		products,
 		colors,
 		sections,
@@ -42,6 +44,7 @@ const Products = () => {
 
 	return (
 		<div>
+			<ButtonBases handleChangeClickRef={handleChangeClick} />
 			<Grid
 				container
 				spacing={1}
@@ -52,7 +55,6 @@ const Products = () => {
 					container
 					sx={{
 						width: '90%',
-
 						marginLeft: 'auto',
 						marginRight: 'auto',
 						padding: '10px',
