@@ -60,11 +60,11 @@ const Product = ({ product }) => {
 						<Grid
 							container
 							justify="center"
-							alignItems="center"
+							alignItems="initial"
 							direction="column"
 						>
 							<Grid item>
-								<Typography variant="h8" color="primary">
+								<Typography variant="body2" color="primary">
 									{product.name}
 								</Typography>
 							</Grid>

@@ -1,11 +1,10 @@
 import { Grid } from '@mui/material';
+
 import { useEffect, useState } from 'react';
+import useProducts from '../../hooks/useProducts';
+
 import Product from './Product';
 import SelectFilter from './SelectFilter';
-import { getBrands } from '../../services/brandService';
-import { getColors } from '../../services/colorService';
-import { getProducts } from '../../services/productsService';
-import { getSections } from '../../services/sectionService';
 import { makeStyles } from '@material-ui/core';
 import SearchLine from './SearchLine';
 
@@ -18,69 +17,28 @@ const useStyles = makeStyles((theme) => ({
 const Products = () => {
 	const classes = useStyles();
 
-	const [products, setproducts] = useState([]);
-	const [brands, setBrands] = useState([]);
-	const [colors, setColors] = useState([]);
-	const [sections, setSections] = useState([]);
-	const [criteria, setCriteria] = useState({});
+	const {
+		loadProducts,
+		loadBrands,
+		loadColors,
+		loadSections,
+		handleChange,
+		products,
+		colors,
+		sections,
+		brands,
+		searchCriteria,
+	} = useProducts();
 
 	useEffect(() => {
-		const loadProducts = async () => {
-			const response = await getProducts(criteria);
-			if (response.status === 200) {
-				setproducts(response.data);
-			}
-		};
 		loadProducts();
-	}, [criteria]);
+	}, [searchCriteria]);
 
 	useEffect(() => {
-		const loadBrands = async () => {
-			const response = await getBrands();
-			if (response.status === 200) {
-				setBrands(response.data);
-			}
-		};
-
-		const loadColors = async () => {
-			const response = await getColors();
-			if (response.status === 200) {
-				setColors(response.data);
-			}
-		};
-
-		const loadSections = async () => {
-			const response = await getSections();
-			if (response.status === 200) {
-				setSections(response.data);
-			}
-		};
-
 		loadBrands();
 		loadColors();
 		loadSections();
 	}, []);
-
-	const handleChange = (criteria, id) => {
-		const idCriteria = id;
-		let searchCriteria;
-		if (idCriteria === 'brand') {
-			searchCriteria = { brand: criteria };
-			setCriteria(searchCriteria);
-		}
-		if (idCriteria === 'color') {
-			searchCriteria = { color: criteria };
-			setCriteria(searchCriteria);
-		}
-		if (idCriteria === 'description') {
-			searchCriteria = { description: criteria };
-			setCriteria(searchCriteria);
-		}
-		if (idCriteria === 'section') {
-			searchCriteria = { section: criteria };
-			setCriteria(searchCriteria);
-		}
-	};
 
 	return (
 		<div>
