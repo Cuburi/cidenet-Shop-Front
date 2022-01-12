@@ -49,7 +49,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 	justifyContent: 'flex-start',
 }));
 
-const Navbar = () => {
+const Navbar = ({ notificationRef }) => {
 	const [open, setOpen] = useState(false);
 	const classes = useStyles();
 	const navigate = useNavigate();
@@ -63,12 +63,13 @@ const Navbar = () => {
 	};
 
 	const handleCheckout = () => {
+		shoppingCart.length > 0 ? navigate('/checkout') : notificationRef(true);
 		setOpen(false);
-		navigate('/checkout');
 	};
 
 	const handleClickOpen = () => {
 		setOpen(true);
+		notificationRef(false);
 	};
 
 	const handleClose = () => {

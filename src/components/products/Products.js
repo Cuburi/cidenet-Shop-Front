@@ -7,7 +7,7 @@ import Product from './Product';
 import SelectFilter from './SelectFilter';
 import { makeStyles } from '@material-ui/core';
 import SearchLine from './SearchLine';
-import ButtonBases from '../../components/ButtonGroup';
+import ButtonFilter from '../../components/ButtonGroup';
 
 const useStyles = makeStyles((theme) => ({
 	grow: {
@@ -27,24 +27,25 @@ const Products = () => {
 		handleChangeClick,
 		products,
 		colors,
-		sections,
 		brands,
 		searchCriteria,
 	} = useProducts();
 
 	useEffect(() => {
 		loadProducts();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchCriteria]);
 
 	useEffect(() => {
 		loadBrands();
 		loadColors();
 		loadSections();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
 		<div>
-			<ButtonBases handleChangeClickRef={handleChangeClick} />
+			<ButtonFilter handleChangeClickRef={handleChangeClick} />
 			<Grid
 				container
 				spacing={1}
@@ -71,13 +72,6 @@ const Products = () => {
 						valueCriteria={colors}
 						text={'Colores'}
 						id={'color'}
-						handleChangeRef={handleChange}
-					/>
-
-					<SelectFilter
-						valueCriteria={sections}
-						text={'Secciones'}
-						id={'section'}
 						handleChangeRef={handleChange}
 					/>
 

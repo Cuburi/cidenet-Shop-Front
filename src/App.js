@@ -10,13 +10,16 @@ import Checkout from './pages/Checkout';
 import Home from './pages/Home';
 
 import Navbar from './components/navbar/Navbar';
+import { useState } from 'react';
+import Notification from './components/Notification';
 
 function App() {
+	const [notification, setNotification] = useState(false);
 	return (
 		<UserContextProvider>
 			<ShoppingCartContextProvider>
 				<div>
-					<Navbar />
+					<Navbar notificationRef={setNotification} />
 					<section>
 						<Routes>
 							<Route path="/login" element={<Login />}></Route>
@@ -27,6 +30,13 @@ function App() {
 						</Routes>
 					</section>
 				</div>
+				{notification && (
+					<Notification
+						type="error"
+						tittle="Error"
+						text="email y/o contraseñas incorrectas"
+					/>
+				)}
 			</ShoppingCartContextProvider>
 		</UserContextProvider>
 	);

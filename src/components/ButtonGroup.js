@@ -82,7 +82,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
 	transition: theme.transitions.create('opacity'),
 }));
 
-export default function ButtonBases({ handleChangeClickRef }) {
+export default function ButtonFilter({ handleChangeClickRef }) {
 	return (
 		<Box
 			sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}

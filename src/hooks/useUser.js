@@ -2,13 +2,14 @@ import { useCallback, useContext, useState } from 'react';
 
 import Context from '../context/UserContext';
 
-import { loginUser } from '../services/loginService';
+import { loginUser, getUser } from '../services/loginService';
 import { registerUser } from '../services/registerService';
 
 const useUser = () => {
-	const { jwt, setJWT } = useContext(Context);
+	const { jwt, setJWT, setEmailUser } = useContext(Context);
 	const [isRegister, setIsRegister] = useState(false);
 	const [message, setMessage] = useState('');
+	const [user, setUser] = useState({});
 	const [stateLogin, setStateLogin] = useState({
 		loading: false,
 		error: false,
@@ -28,12 +29,14 @@ const useUser = () => {
 					setStateLogin({ loading: false, error: false });
 					setJWT(response.data.token);
 					window.sessionStorage.setItem('jwt', response.data.token);
+					setEmailUser(response.data.emai);
+					window.sessionStorage.setItem('email', response.data.email);
 				}
 			} else {
 				setStateLogin({ loading: false, error: true });
 			}
 		},
-		[setJWT]
+		[setJWT, setEmailUser]
 	);
 
 	const register = useCallback(
@@ -67,12 +70,20 @@ const useUser = () => {
 	const logout = useCallback(() => {
 		setJWT(null);
 		window.sessionStorage.setItem('jwt', '');
-	}, [setJWT]);
+		setEmailUser(null);
+		window.sessionStorage.setItem('email', '');
+	}, [setJWT, setEmailUser]);
+
+	const getUserByEmail = useCallback(async (email) => {
+		const response = await getUser(email);
+		setUser(response.data);
+	}, []);
 
 	return {
 		login,
 		logout,
 		register,
+		getUserByEmail,
 		isLogginLoading: stateLogin.loading,
 		hasLoginError: stateLogin.error,
 		isLogged: Boolean(jwt),
@@ -80,6 +91,7 @@ const useUser = () => {
 		hasRegisterError: stateRegister.error,
 		isRegister: isRegister,
 		message: message,
+		user: user,
 	};
 };
 

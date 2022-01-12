@@ -13,10 +13,13 @@ import { useNavigate } from 'react-router-dom';
 
 import useUser from '../../hooks/useUser';
 import useShoppingCart from '../../hooks/useShoppingCart';
+import useCheckout from '../../hooks/useCheckout';
 
 import Footer from '../../components/Layout/Footer';
 import TableShoppingCart from '../../components/checkout/TableShoppingCart';
 import DialogConfirm from '../../components/checkout/DialogConfirm';
+import DialogConfirmAddress from '../../components/checkout/DialogConfirmAddress';
+import DialogSendEmail from '../../components/checkout/DialogSendEmail';
 
 const useStyles = makeStyles(({ theme }) => ({
 	root: {
@@ -43,8 +46,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Checkout = () => {
 	const classes = useStyles();
 	const navigate = useNavigate();
-	const { isLogged } = useUser();
+	const { isLogged, user, getUserByEmail } = useUser();
 	const [openRemoveShoppingCart, setOpenRemoveShoppingCart] = useState(false);
+	const [openConfirmAddress, setOpenConfirmAddress] = useState(false);
+	const [openSendEmail, setOpenSendEmail] = useState(false);
 	const {
 		shoppingCart,
 		totalPrice,
@@ -54,13 +59,18 @@ const Checkout = () => {
 		newStock,
 		totalPriceShoppingCart,
 	} = useShoppingCart();
-
+	const { sale, newSale } = useCheckout();
 	useEffect(() => {
 		totalPriceShoppingCart();
 	}, [totalPriceShoppingCart]);
 
 	const handleClickOpenRemove = () => {
 		setOpenRemoveShoppingCart(true);
+	};
+
+	const handleClickOpenConfirmAddress = () => {
+		getUserByEmail(window.sessionStorage.getItem('email'));
+		setOpenConfirmAddress(true);
 	};
 
 	const handleCloseRemove = (confirm) => {
@@ -70,6 +80,25 @@ const Checkout = () => {
 		}
 		setOpenRemoveShoppingCart(false);
 	};
+
+	const handleCloseConfirmAddress = () => {
+		setOpenConfirmAddress(false);
+	};
+
+	const handleClickOpenSendEmail = () => {
+		setOpenSendEmail(true);
+	};
+
+	const handleCloseSendEmail = () => {
+		setOpenSendEmail(false);
+		navigate('/');
+	};
+
+	useEffect(() => {
+		getUserByEmail(window.sessionStorage.getItem('email'));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<>
 			<Grid className={classes.root}>
@@ -124,7 +153,9 @@ const Checkout = () => {
 						<Button
 							variant="contained"
 							color="primary"
-							onClick={() => (isLogged ? newStock() : navigate('/login'))}
+							onClick={() =>
+								isLogged ? handleClickOpenConfirmAddress() : navigate('/login')
+							}
 						>
 							Hacer compra
 						</Button>
@@ -138,7 +169,33 @@ const Checkout = () => {
 			>
 				<DialogConfirm handleCloseRef={handleCloseRemove} />
 			</Dialog>
+			<Dialog
+				open={openConfirmAddress}
+				TransitionComponent={Transition}
+				onClose={handleCloseConfirmAddress}
+			>
+				<DialogConfirmAddress
+					handleCloseRef={handleCloseConfirmAddress}
+					userRef={user}
+					addressRef={user.address}
+					newSaleRef={newSale}
+					saleRef={sale}
+					totalPriceRef={totalPrice}
+					shoppingCartRef={shoppingCart}
+					removeShoppingCartRef={removeShoppingCart}
+					newStockRef={newStock}
+					openSendEmailRef={handleClickOpenSendEmail}
+				/>
+			</Dialog>
+			<Dialog
+				open={openSendEmail}
+				TransitionComponent={Transition}
+				onClose={handleCloseSendEmail}
+			>
+				<DialogSendEmail handleCloseRef={handleCloseSendEmail} />
+			</Dialog>
 			<Footer />
+			{shoppingCart.length <= 0 && navigate('/')}
 		</>
 	);
 };

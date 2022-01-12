@@ -7,7 +7,7 @@ import { updateStock } from '../services/detailSizeService';
 
 const useShoppingCart = () => {
 	const { shoppingCart, setShoppingCart } = useContext(Context);
-	const { jwt, setJWT } = useContext(ContextUser);
+	const { jwt } = useContext(ContextUser);
 	const [totalPrice, setTotalPrice] = useState(0);
 
 	const addItemShoppingCart = (item) => {
@@ -98,9 +98,12 @@ const useShoppingCart = () => {
 		);
 	};
 
-	const updateStockFetch = useCallback(async (idProduct, idSize, value) => {
-		await updateStock(idProduct, idSize, value, jwt);
-	}, []);
+	const updateStockFetch = useCallback(
+		async (idProduct, idSize, value) => {
+			await updateStock(idProduct, idSize, value, jwt);
+		},
+		[jwt]
+	);
 
 	return {
 		addItemShoppingCart,
