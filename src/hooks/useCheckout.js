@@ -17,7 +17,6 @@ const detailSale = ({ shoppingCart, saleRef }) => {
 			sale: saleRef,
 		});
 		if (response.status === 200) {
-			console.log('Oka');
 		}
 	});
 };

@@ -12,6 +12,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import { useNavigate } from 'react-router-dom';
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
 		backgroundColor: theme.palette.common.white,
@@ -49,6 +51,11 @@ const TableShoppingCart = ({
 	removeItemShoppingCart,
 }) => {
 	const classes = useStyles();
+	const navigate = useNavigate();
+	const test = (product) => {
+		removeItemShoppingCart(product);
+		shoppingCart.length === 1 && shoppingCart.length - 1 <= 0 && navigate('/');
+	};
 	return (
 		<Paper
 			sx={{
@@ -95,7 +102,7 @@ const TableShoppingCart = ({
 											pb: 1,
 										}}
 									>
-										<IconButton onClick={() => removeItemShoppingCart(product)}>
+										<IconButton onClick={() => test(product)}>
 											<RemoveIcon className={classes.iconBtn} />
 										</IconButton>
 

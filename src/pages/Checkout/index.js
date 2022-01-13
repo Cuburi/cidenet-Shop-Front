@@ -95,7 +95,7 @@ const Checkout = () => {
 	};
 
 	useEffect(() => {
-		getUserByEmail(window.sessionStorage.getItem('email'));
+		isLogged && getUserByEmail(window.sessionStorage.getItem('email'));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -195,7 +195,7 @@ const Checkout = () => {
 				<DialogSendEmail handleCloseRef={handleCloseSendEmail} />
 			</Dialog>
 			<Footer />
-			{shoppingCart.length <= 0 && navigate('/')}
+			{}
 		</>
 	);
 };

@@ -36,7 +36,7 @@ const DialogConfirmAddress = ({
 			);
 			newStockRef();
 			removeShoppingCartRef();
-			handleCloseRef(false);
+			handleCloseRef();
 			openSendEmailRef();
 		},
 	});
@@ -67,7 +67,7 @@ const DialogConfirmAddress = ({
 					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={() => test()}>Cancelar</Button>
+					<Button onClick={() => handleCloseRef()}>Cancelar</Button>
 					<Button type="submit">Confirmar</Button>
 				</DialogActions>
 			</form>
