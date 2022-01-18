@@ -9,20 +9,34 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import * as React from 'react';
 
+import useChangePassword from '../../hooks/useChangePassword';
 import useUser from '../../hooks/useUser';
 
 import Notification from '../../components/Notification';
 import imageLogin from '../../assets/Login1.jpg';
+import DialogSendEmailChangePassword from '../../components/changePassword/DialogSendEmailChangePassword';
+import DialogConfirmSendEmail from '../../components/changePassword/DialogConfirmSendEmail';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const Login = () => {
 	const { login, isLogged, isLogginLoading, hasLoginError } = useUser();
+	const [openSendEmailChangePassword, setOpenSendEmailChangePassword] =
+		useState(false);
+	const [openConfirmSendEmail, setOpenConfirmSendEmail] = useState(false);
 	const navigate = useNavigate();
+	const { sendEmailChangePassword, errorChangePassword } = useChangePassword();
 
 	const formik = useFormik({
 		initialValues: {
@@ -45,6 +59,22 @@ const Login = () => {
 	useEffect(() => {
 		if (isLogged) navigate(-1);
 	}, [isLogged, navigate]);
+
+	const openClickDialogSendEmail = () => {
+		setOpenSendEmailChangePassword(true);
+	};
+
+	const handleCloseDialogSendEmail = () => {
+		setOpenSendEmailChangePassword(false);
+	};
+
+	const openClickDialogConfirmSendEmail = () => {
+		setOpenConfirmSendEmail(true);
+	};
+
+	const handleCloseConfirmSendEmail = () => {
+		setOpenConfirmSendEmail(false);
+	};
 
 	return (
 		<>
@@ -84,8 +114,9 @@ const Login = () => {
 							<LockOutlinedIcon />
 						</Avatar>
 						<Typography variant="h5">iniciar sesión</Typography>
-						<form onSubmit={formik.handleSubmit}>
-							<Box noValidate sx={{ mt: 1 }}>
+
+						<Box noValidate sx={{ mt: 1 }}>
+							<form onSubmit={formik.handleSubmit}>
 								<TextField
 									value={formik.values.email}
 									margin="normal"
@@ -135,27 +166,58 @@ const Login = () => {
 										text="email y/o contraseñas incorrectas"
 									/>
 								)}
-								<Grid container>
-									<Grid item xs>
-										<Link component="button" href="#" variant="body2">
-											¿Olvidaste tu contraseña?
-										</Link>
-									</Grid>
-									<Grid item>
-										<Link
-											component="button"
-											onClick={() => navigate('/register')}
-											variant="body2"
-										>
-											¿No tienes una cuenta? Registrate
-										</Link>
-									</Grid>
+								{errorChangePassword && (
+									<Notification
+										type="error"
+										tittle="Error"
+										text="Correo no existe"
+									/>
+								)}
+							</form>
+							<Grid container>
+								<Grid item xs>
+									<Link
+										component="button"
+										variant="body2"
+										onClick={openClickDialogSendEmail}
+									>
+										¿Olvidaste tu contraseña?
+									</Link>
 								</Grid>
-							</Box>
-						</form>
+								<Grid item>
+									<Link
+										component="button"
+										onClick={() => navigate('/register')}
+										variant="body2"
+									>
+										¿No tienes una cuenta? Registrate
+									</Link>
+								</Grid>
+							</Grid>
+						</Box>
 					</Box>
 				</Grid>
 			</Grid>
+			<Dialog
+				open={openSendEmailChangePassword}
+				TransitionComponent={Transition}
+				onClose={handleCloseDialogSendEmail}
+			>
+				<DialogSendEmailChangePassword
+					handleCloseRef={handleCloseDialogSendEmail}
+					sendEmailRef={sendEmailChangePassword}
+					openConfirmSendEmailRef={openClickDialogConfirmSendEmail}
+					errorRef={errorChangePassword}
+				/>
+			</Dialog>
+
+			<Dialog
+				open={openConfirmSendEmail}
+				TransitionComponent={Transition}
+				onClose={handleCloseConfirmSendEmail}
+			>
+				<DialogConfirmSendEmail handleCloseRef={handleCloseConfirmSendEmail} />
+			</Dialog>
 		</>
 	);
 };

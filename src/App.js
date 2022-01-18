@@ -8,6 +8,7 @@ import ErrorPage from './pages/ErrorPage';
 import Register from './pages/Register';
 import Checkout from './pages/Checkout';
 import Home from './pages/Home';
+import ChangePassword from './pages/ChangePassword';
 
 import Navbar from './components/navbar/Navbar';
 import { useState } from 'react';
@@ -27,6 +28,10 @@ function App() {
 							<Route path="*" element={<ErrorPage />}></Route>
 							<Route path="/register" element={<Register />}></Route>
 							<Route path="/checkout" element={<Checkout />}></Route>
+							<Route
+								path="/change-password/:tokenPassword"
+								element={<ChangePassword />}
+							></Route>
 						</Routes>
 					</section>
 				</div>
