@@ -6,20 +6,31 @@ import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import FormControl from '@mui/material/FormControl';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import * as React from 'react';
 
 import useUser from '../../hooks/useUser';
+import useChangePassword from '../../hooks/useChangePassword';
 
 import Notification from '../../components/Notification';
 import imageRegister from '../../assets/Login.jpg';
+import DialogSendEmailChangePassword from '../../components/changePassword/DialogSendEmailChangePassword';
+import DialogConfirmSendEmail from '../../components/changePassword/DialogConfirmSendEmail';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const Register = () => {
 	const formik = useFormik({
@@ -68,6 +79,10 @@ const Register = () => {
 
 	const { register, isRegister, isRegisterLoading, hasRegisterError, message } =
 		useUser();
+	const [openSendEmailChangePassword, setOpenSendEmailChangePassword] =
+		useState(false);
+	const [openConfirmSendEmail, setOpenConfirmSendEmail] = useState(false);
+	const { sendEmailChangePassword, errorChangePassword } = useChangePassword();
 	const navigate = useNavigate();
 
 	const optionsTypeId = [
@@ -83,6 +98,22 @@ const Register = () => {
 	useEffect(() => {
 		if (isRegister) navigate('/login');
 	}, [isRegister, navigate]);
+
+	const openClickDialogSendEmail = () => {
+		setOpenSendEmailChangePassword(true);
+	};
+
+	const handleCloseDialogSendEmail = () => {
+		setOpenSendEmailChangePassword(false);
+	};
+
+	const openClickDialogConfirmSendEmail = () => {
+		errorChangePassword && console.log('Entro'); //setOpenConfirmSendEmail(true);
+	};
+
+	const handleCloseConfirmSendEmail = () => {
+		setOpenConfirmSendEmail(false);
+	};
 
 	return (
 		<>
@@ -280,11 +311,47 @@ const Register = () => {
 								{hasRegisterError && (
 									<Notification type="error" tittle="Error" text={message} />
 								)}
+								{errorChangePassword && (
+									<Notification
+										type="error"
+										tittle="Error"
+										text="Correo no existe"
+									/>
+								)}
 							</Box>
 						</form>
+						<Grid item xs>
+							<Link
+								component="button"
+								variant="body2"
+								onClick={openClickDialogSendEmail}
+							>
+								¿Olvidaste tu contraseña?
+							</Link>
+						</Grid>
 					</Box>
 				</Grid>
 			</Grid>
+			<Dialog
+				open={openSendEmailChangePassword}
+				TransitionComponent={Transition}
+				onClose={handleCloseDialogSendEmail}
+			>
+				<DialogSendEmailChangePassword
+					handleCloseRef={handleCloseDialogSendEmail}
+					sendEmailRef={sendEmailChangePassword}
+					openConfirmSendEmailRef={openClickDialogConfirmSendEmail}
+					errorRef={errorChangePassword}
+				/>
+			</Dialog>
+
+			<Dialog
+				open={openConfirmSendEmail}
+				TransitionComponent={Transition}
+				onClose={handleCloseConfirmSendEmail}
+			>
+				<DialogConfirmSendEmail handleCloseRef={handleCloseConfirmSendEmail} />
+			</Dialog>
 		</>
 	);
 };

@@ -8,9 +8,10 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import LinearProgress from '@mui/material/LinearProgress';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
+
+import Notification from '../../components/Notification';
 
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -18,6 +19,8 @@ import { useState } from 'react';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+
+import useChangePassword from '../../hooks/useChangePassword';
 
 import DialogConfirmChangePassword from '../../components/changePassword/DialogConfirmChangePassword';
 
@@ -28,40 +31,42 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const ChangePassword = () => {
+	const { callChangePassword, errorChangePassword, loadingChangePassword } =
+		useChangePassword();
+
 	const navigate = useNavigate();
 
 	const { tokenPassword } = useParams();
 
-	const [openDialogConfirmChangePassword, setOpenDialogConfirmChangePassword] =
-		useState(false);
+	const [, setOpenDialogConfirmChangePassword] = useState(false);
 
 	const formik = useFormik({
 		initialValues: {
 			password: '',
-			passwordConfirm: '',
+			confirmPassword: '',
 		},
 		validationSchema: Yup.object({
 			password: Yup.string()
 				.required('Contraseña es requerida')
-				.oneOf([Yup.ref('passwordConfirm')], 'Las contraseñas no son iguales ')
+				.oneOf([Yup.ref('confirmPassword')], 'Las contraseñas no son iguales ')
 				.matches(
 					/^.*(?=.{5,})((?=.*[/!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
 					'Contraseña debe contener minimo 5 caracteres, una minúscula,una mayúscula, un número y un caracter especial'
 				),
-			passwordConfirm: Yup.string()
+			confirmPassword: Yup.string()
 				.required('Confirmar la contraseña')
 				.oneOf([Yup.ref('password')], 'Las contraseñas no son iguales '),
 		}),
 		onSubmit: (changePassword) => {
 			console.log(changePassword);
-			console.log(tokenPassword);
-			handleClickConfirmChangePassword();
+			callChangePassword({
+				password: changePassword.password,
+				confirmPassword: changePassword.confirmPassword,
+				tokenPassword,
+			});
+			console.log(errorChangePassword);
 		},
 	});
-
-	const handleClickConfirmChangePassword = () => {
-		setOpenDialogConfirmChangePassword(true);
-	};
 
 	const handleCloseConfirmChangePassword = () => {
 		setOpenDialogConfirmChangePassword(false);
@@ -128,17 +133,17 @@ const ChangePassword = () => {
 									value={formik.values.passwordConfirm}
 									margin="normal"
 									fullWidth
-									name="passwordConfirm"
+									name="confirmPassword"
 									label="Confirmar contraseña"
 									type="password"
-									id="passwordConfirm"
+									id="confirmPassword"
 									error={
-										formik.errors.passwordConfirm &&
-										Boolean(formik.errors.passwordConfirm)
+										formik.errors.confirmPassword &&
+										Boolean(formik.errors.confirmPassword)
 									}
 									helperText={
-										formik.touched.passwordConfirm &&
-										formik.errors.passwordConfirm
+										formik.touched.confirmPassword &&
+										formik.errors.confirmPassword
 									}
 									onChange={formik.handleChange}
 								/>
@@ -152,6 +157,14 @@ const ChangePassword = () => {
 								>
 									Cambiar contraseña
 								</Button>
+
+								{errorChangePassword && (
+									<Notification
+										type="error"
+										tittle="Error"
+										text="Error en el cambio de contraseña"
+									/>
+								)}
 
 								<Grid container>
 									<Grid item xs>
@@ -175,7 +188,7 @@ const ChangePassword = () => {
 				</Grid>
 			</Grid>
 			<Dialog
-				open={openDialogConfirmChangePassword}
+				open={!loadingChangePassword && !errorChangePassword}
 				TransitionComponent={Transition}
 				onClose={handleCloseConfirmChangePassword}
 			>

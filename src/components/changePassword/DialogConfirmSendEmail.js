@@ -15,7 +15,7 @@ const DialogConfirmSendEmail = ({ handleCloseRef }) => {
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={() => handleCloseRef(true)}>Confirmar</Button>
+				<Button onClick={() => handleCloseRef()}>Confirmar</Button>
 			</DialogActions>
 		</>
 	);

@@ -11,3 +11,15 @@ export const sendEmail = async (emailTo) => {
 		console.log(error);
 	}
 };
+
+export const changePassword = async (changePassword) => {
+	try {
+		const response = await instanceAxios.post(
+			'/email-password/change-password',
+			changePassword
+		);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};
