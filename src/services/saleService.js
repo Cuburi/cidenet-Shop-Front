@@ -17,3 +17,16 @@ export const createDetail = async (detailSale) => {
 		console.log(error);
 	}
 };
+
+export const sendEmailSale = async (emailSale) => {
+	console.log(emailSale);
+	try {
+		const response = await instanceAxios.post(
+			'/email-password/send-email-sale',
+			emailSale
+		);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};

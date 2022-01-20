@@ -59,7 +59,7 @@ const Checkout = () => {
 		newStock,
 		totalPriceShoppingCart,
 	} = useShoppingCart();
-	const { sale, newSale } = useCheckout();
+	const { newSale } = useCheckout();
 	useEffect(() => {
 		totalPriceShoppingCart();
 	}, [totalPriceShoppingCart]);
@@ -154,7 +154,11 @@ const Checkout = () => {
 							variant="contained"
 							color="primary"
 							onClick={() =>
-								isLogged ? handleClickOpenConfirmAddress() : navigate('/login')
+								isLogged
+									? shoppingCart.length > 0
+										? handleClickOpenConfirmAddress()
+										: navigate('/')
+									: navigate('/login')
 							}
 						>
 							Hacer compra
@@ -177,9 +181,7 @@ const Checkout = () => {
 				<DialogConfirmAddress
 					handleCloseRef={handleCloseConfirmAddress}
 					userRef={user}
-					addressRef={user.address}
 					newSaleRef={newSale}
-					saleRef={sale}
 					totalPriceRef={totalPrice}
 					shoppingCartRef={shoppingCart}
 					removeShoppingCartRef={removeShoppingCart}

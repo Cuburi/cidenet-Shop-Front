@@ -1,6 +1,8 @@
-import { useState } from 'react';
-
-import { createSale, createDetail } from '../services/saleService';
+import {
+	createSale,
+	createDetail,
+	sendEmailSale,
+} from '../services/saleService';
 
 const detailSale = ({ shoppingCart, saleRef }) => {
 	shoppingCart.map(async (item) => {
@@ -22,19 +24,36 @@ const detailSale = ({ shoppingCart, saleRef }) => {
 };
 
 const useCheckout = () => {
-	const [sale, setSale] = useState({});
+	//const [sale, setSale] = useState({});
 
 	const newSale = async (address, date, totalPrice, user, shoppingCart) => {
-		const response = await createSale({ address, date, totalPrice, user });
-		if (response.status === 200) {
-			setSale(response.data);
-			detailSale({ shoppingCart, saleRef: response.data });
+		const { status, data } = await createSale({
+			address,
+			date,
+			totalPrice,
+			user,
+		});
+		if (status === 200) {
+			//setSale(data);
+			detailSale({ shoppingCart, saleRef: data });
+			callSendEmailSale(shoppingCart, user.email, data);
 		}
+	};
+
+	const callSendEmailSale = (shoppingCart, mailTo, saleRef) => {
+		console.log(shoppingCart, mailTo, saleRef);
+
+		const products = shoppingCart.map((product) => product.size.product.name);
+
+		sendEmailSale({
+			mailTo: mailTo,
+			totalPrice: saleRef.totalPrice,
+			products: products,
+		});
 	};
 
 	return {
 		newSale,
-		sale,
 	};
 };
 

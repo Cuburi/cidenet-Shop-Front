@@ -25,9 +25,9 @@ const DialogConfirmAddress = ({
 		validationSchema: Yup.object({
 			saleAddress: Yup.string().required('Es necesario un dirección'),
 		}),
-		onSubmit: (sale) => {
+		onSubmit: async (sale) => {
 			const dateNow = new Date().toISOString();
-			newSaleRef(
+			await newSaleRef(
 				sale.saleAddress,
 				dateNow,
 				totalPriceRef,
