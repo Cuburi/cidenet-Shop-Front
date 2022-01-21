@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react';
 
 import { getStock } from '../services/detailSizeService';
 
+import { updateAccountVisit } from '../services/productsService';
+
 const useProduct = () => {
 	const [stock, setStock] = useState([]);
 
@@ -11,8 +13,14 @@ const useProduct = () => {
 			setStock(response.data);
 		}
 	}, []);
+
+	const CallUpdateAccountVisit = async (idProduct) => {
+		await updateAccountVisit(idProduct);
+	};
+
 	return {
 		getStockSize,
+		CallUpdateAccountVisit,
 		stock,
 	};
 };

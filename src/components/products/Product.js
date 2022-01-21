@@ -29,7 +29,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Product = ({ product }) => {
-	const { getStockSize, stock } = useProduct();
+	const { getStockSize, stock, CallUpdateAccountVisit } = useProduct();
 	const [open, setOpen] = useState(false);
 
 	const handleClickOpen = () => {
@@ -107,6 +107,7 @@ const Product = ({ product }) => {
 					open={open}
 					product={product}
 					stock={stock}
+					updateAccountVisitRef={CallUpdateAccountVisit}
 				/>
 			</Dialog>
 		</>

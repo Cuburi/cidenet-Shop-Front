@@ -19,6 +19,7 @@ const Products = () => {
 	const classes = useStyles();
 
 	const {
+		loadProductsByOrder,
 		loadProducts,
 		loadBrands,
 		loadColors,
@@ -32,7 +33,11 @@ const Products = () => {
 	} = useProducts();
 
 	useEffect(() => {
-		loadProducts();
+		if (Object.keys(searchCriteria).length === 0) {
+			loadProductsByOrder();
+		} else {
+			loadProducts();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchCriteria]);
 

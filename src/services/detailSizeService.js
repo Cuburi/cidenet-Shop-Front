@@ -19,3 +19,13 @@ export const updateStock = async (idProduct, idSize, value, jwt) => {
 		console.log(error);
 	}
 };
+
+export const updateAccountVisit = async (idProduct) => {
+	console.log(idProduct);
+	try {
+		const response = await instanceAxios.put(`/accountVisit/${idProduct}`);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};

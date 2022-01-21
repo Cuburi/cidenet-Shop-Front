@@ -1,6 +1,6 @@
 import { getColors } from '../services/colorService';
 import { getBrands } from '../services/brandService';
-import { getProducts } from '../services/productsService';
+import { getProducts, getProductsByOrder } from '../services/productsService';
 import { getSections } from '../services/sectionService';
 
 import { useState } from 'react';
@@ -11,6 +11,14 @@ const useProducts = () => {
 	const [colors, setColors] = useState([]);
 	const [sections, setSections] = useState([]);
 	const [searchCriteria, setSearchCriteria] = useState({});
+
+	const loadProductsByOrder = async () => {
+		const response = await getProductsByOrder();
+
+		if (response.status === 200) {
+			setproducts(response.data);
+		}
+	};
 
 	const loadProducts = async () => {
 		const response = await getProducts(searchCriteria);
@@ -44,16 +52,36 @@ const useProducts = () => {
 		const idCriteria = id;
 
 		if (idCriteria === 'brand') {
-			setSearchCriteria({ ...searchCriteria, brand: criteria });
+			if (criteria === '') {
+				const { brand, ...updateSearchCriteria } = searchCriteria;
+				setSearchCriteria(updateSearchCriteria);
+			} else {
+				setSearchCriteria({ ...searchCriteria, brand: criteria });
+			}
 		}
 		if (idCriteria === 'color') {
-			setSearchCriteria({ ...searchCriteria, color: criteria });
+			if (criteria === '') {
+				const { color, ...updateSearchCriteria } = searchCriteria;
+				setSearchCriteria(updateSearchCriteria);
+			} else {
+				setSearchCriteria({ ...searchCriteria, color: criteria });
+			}
 		}
 		if (idCriteria === 'description') {
-			setSearchCriteria({ ...searchCriteria, description: criteria });
+			if (criteria === '') {
+				const { description, ...updateSearchCriteria } = searchCriteria;
+				setSearchCriteria(updateSearchCriteria);
+			} else {
+				setSearchCriteria({ ...searchCriteria, description: criteria });
+			}
 		}
 		if (idCriteria === 'section') {
-			setSearchCriteria({ ...searchCriteria, section: criteria });
+			if (criteria === '') {
+				const { color, ...updateSearchCriteria } = searchCriteria;
+				setSearchCriteria(updateSearchCriteria);
+			} else {
+				setSearchCriteria({ ...searchCriteria, section: criteria });
+			}
 		}
 	};
 
@@ -62,6 +90,7 @@ const useProducts = () => {
 	};
 
 	return {
+		loadProductsByOrder,
 		loadProducts,
 		loadBrands,
 		loadColors,

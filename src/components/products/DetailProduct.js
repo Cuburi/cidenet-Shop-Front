@@ -43,7 +43,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const DetailProduct = ({ handleCloseRef, product = {}, stock = [] }) => {
+const DetailProduct = ({
+	handleCloseRef,
+	product = {},
+	stock = [],
+	updateAccountVisitRef,
+}) => {
 	const { addItemShoppingCart } = useShoppingCart();
 	const classes = useStyles();
 	const formik = useFormik({
@@ -66,6 +71,7 @@ const DetailProduct = ({ handleCloseRef, product = {}, stock = [] }) => {
 						: formik.values.amount,
 			};
 			addItemShoppingCart(addItem);
+			updateAccountVisitRef(item.size.idProduct);
 			handleCloseRef();
 		},
 	});
