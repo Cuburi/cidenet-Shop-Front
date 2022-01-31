@@ -52,9 +52,9 @@ const TableShoppingCart = ({
 }) => {
 	const classes = useStyles();
 	const navigate = useNavigate();
-	const test = (product) => {
+	const removeItem = (product) => {
 		removeItemShoppingCart(product);
-		shoppingCart.length === 1 && shoppingCart.length - 1 <= 0 && navigate('/');
+		shoppingCart.length === 1 && shoppingCart[0].acount === 0 && navigate('/');
 	};
 	return (
 		<Paper
@@ -102,7 +102,7 @@ const TableShoppingCart = ({
 											pb: 1,
 										}}
 									>
-										<IconButton onClick={() => test(product)}>
+										<IconButton onClick={() => removeItem(product)}>
 											<RemoveIcon className={classes.iconBtn} />
 										</IconButton>
 

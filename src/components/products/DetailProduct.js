@@ -9,11 +9,26 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { styled } from '@mui/material/styles';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import useShoppingCart from '../../hooks/useShoppingCart';
+
+const GreenSwitch = styled(Switch)(({ theme }) => ({
+	'& .MuiSwitch-switchBase.Mui-checked': {
+		color: theme.palette.primary.main,
+		'&:hover': {
+			backgroundColor: theme.palette.primary.main,
+		},
+	},
+	'& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+		backgroundColor: theme.palette.primary.main,
+	},
+}));
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -42,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
 		webkitBoxFlex: '1',
 	},
 }));
+
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const DetailProduct = ({
 	handleCloseRef,
@@ -153,34 +170,57 @@ const DetailProduct = ({
 											helperText={formik.touched.size && formik.errors.size}
 										>
 											{stock.map((size) => {
-												if (size.stock > 0) {
-													return (
-														<MenuItem key={size.size.name} value={size}>
-															{size.size.name}
-														</MenuItem>
-													);
-												}
-												return null;
+												return (
+													<MenuItem key={size.size.name} value={size}>
+														{size.size.name}
+													</MenuItem>
+												);
 											})}
 										</TextField>
+										{formik.values.size !== '' &&
+											(formik.values.size.stock > 0 ? (
+												<FormControlLabel
+													control={
+														<GreenSwitch {...label} disabled defaultChecked />
+													}
+													label={'Disponible: ' + formik.values.size.stock}
+												/>
+											) : (
+												<FormControlLabel
+													control={<GreenSwitch {...label} disabled />}
+													label="No disponible"
+												/>
+											))}
 									</Grid>
 									<Grid item xs={6}>
-										<TextField
-											type="number"
-											id="amount"
-											name="amount"
-											label="Cantidad"
-											value={
-												formik.values.amount > formik.values.size.stock
-													? formik.values.size.stock
-													: formik.values.amount
-											}
-											onChange={formik.handleChange}
-											error={
-												formik.errors.amount && Boolean(formik.errors.amount)
-											}
-											helperText={formik.touched.amount && formik.errors.amount}
-										/>
+										{formik.values.size.stock <= 0 ? (
+											<TextField
+												disabled
+												type="number"
+												id="amount"
+												name="amount"
+												label="Cantidad"
+											/>
+										) : (
+											<TextField
+												type="number"
+												id="amount"
+												name="amount"
+												label="Cantidad"
+												value={
+													formik.values.amount > formik.values.size.stock
+														? formik.values.size.stock
+														: formik.values.amount
+												}
+												onChange={formik.handleChange}
+												error={
+													formik.errors.amount && Boolean(formik.errors.amount)
+												}
+												helperText={
+													formik.touched.amount && formik.errors.amount
+												}
+											/>
+										)}
 									</Grid>
 								</Grid>
 								<Button

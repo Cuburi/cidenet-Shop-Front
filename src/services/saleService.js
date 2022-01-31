@@ -19,7 +19,6 @@ export const createDetail = async (detailSale) => {
 };
 
 export const sendEmailSale = async (emailSale) => {
-	console.log(emailSale);
 	try {
 		const response = await instanceAxios.post(
 			'/email-password/send-email-sale',

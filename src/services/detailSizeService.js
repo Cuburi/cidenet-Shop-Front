@@ -9,7 +9,7 @@ export const getStock = async (id) => {
 	}
 };
 
-export const updateStock = async (idProduct, idSize, value, jwt) => {
+export const updateStock = async (idProduct, idSize, value) => {
 	try {
 		const response = await instanceAxios.put(
 			`/sizeStock/newStock/${idSize}/${idProduct}/${value}`
@@ -20,10 +20,11 @@ export const updateStock = async (idProduct, idSize, value, jwt) => {
 	}
 };
 
-export const updateAccountVisit = async (idProduct) => {
-	console.log(idProduct);
+export const getStockById = async (idProduct, idSize) => {
 	try {
-		const response = await instanceAxios.put(`/accountVisit/${idProduct}`);
+		const response = await instanceAxios.get(
+			`/sizeStock/${idSize}/${idProduct}`
+		);
 		return response;
 	} catch (error) {
 		console.log(error);

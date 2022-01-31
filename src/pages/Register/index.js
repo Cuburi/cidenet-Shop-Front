@@ -73,7 +73,6 @@ const Register = () => {
 			const phone = user.phone;
 			const address = user.address;
 			register({ name, email, password, typeId, document, phone, address });
-			console.log(message);
 		},
 	});
 

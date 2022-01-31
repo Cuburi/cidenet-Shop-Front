@@ -3,7 +3,7 @@ import { useCallback, useContext, useState } from 'react';
 import Context from '../context/ShoppingCartContext';
 import ContextUser from '../context/UserContext';
 
-import { updateStock } from '../services/detailSizeService';
+import { updateStock, getStockById } from '../services/detailSizeService';
 
 const useShoppingCart = () => {
 	const { shoppingCart, setShoppingCart } = useContext(Context);
@@ -48,6 +48,32 @@ const useShoppingCart = () => {
 		return itemInCart ? true : false;
 	};
 
+	const checkStock = async () => {
+		let haveStock = true;
+		const newShoppingCart = await Promise.all(
+			shoppingCart.map(async (itemInCart) => {
+				const { data } = await getStockById(
+					itemInCart.size.idProduct,
+					itemInCart.size.idSize
+				);
+
+				if (itemInCart.acount > data.stock) {
+					haveStock = false;
+					itemInCart.acount = data.stock;
+				}
+				return itemInCart;
+			})
+		);
+		setShoppingCart(newShoppingCart);
+		window.localStorage.setItem(
+			'shoppingCart',
+			JSON.stringify(newShoppingCart)
+		);
+		deleteItemShoppingCart();
+		totalPriceShoppingCart();
+		return haveStock;
+	};
+
 	const removeItemShoppingCart = (item) => {
 		const newShoppingCart = shoppingCart.map((itemInCart) => {
 			if (
@@ -59,17 +85,16 @@ const useShoppingCart = () => {
 
 			return itemInCart;
 		});
-
 		setShoppingCart(newShoppingCart);
 		window.localStorage.setItem(
 			'shoppingCart',
 			JSON.stringify(newShoppingCart)
 		);
-		deleteItemShoppingCar();
+		deleteItemShoppingCart();
 		totalPriceShoppingCart();
 	};
 
-	const deleteItemShoppingCar = () => {
+	const deleteItemShoppingCart = () => {
 		const itemInCart = shoppingCart.find((item) => item.acount === 0);
 		const newShoppingCart = shoppingCart.filter((item) => item !== itemInCart);
 		window.localStorage.setItem(
@@ -111,6 +136,7 @@ const useShoppingCart = () => {
 		totalPriceShoppingCart,
 		removeShoppingCart,
 		newStock,
+		checkStock,
 		totalPrice: totalPrice,
 		shoppingCart: shoppingCart,
 	};

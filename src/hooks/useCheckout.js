@@ -11,21 +11,17 @@ const detailSale = ({ shoppingCart, saleRef }) => {
 		const saleId = saleRef.id;
 		const product = item.size.product;
 
-		const response = await createDetail({
+		await createDetail({
 			amount: account,
 			idProduct,
 			idSale: saleId,
 			product,
 			sale: saleRef,
 		});
-		if (response.status === 200) {
-		}
 	});
 };
 
 const useCheckout = () => {
-	//const [sale, setSale] = useState({});
-
 	const newSale = async (address, date, totalPrice, user, shoppingCart) => {
 		const { status, data } = await createSale({
 			address,
@@ -41,8 +37,6 @@ const useCheckout = () => {
 	};
 
 	const callSendEmailSale = (shoppingCart, mailTo, saleRef) => {
-		console.log(shoppingCart, mailTo, saleRef);
-
 		const products = shoppingCart.map((product) => product.size.product.name);
 
 		sendEmailSale({

@@ -58,13 +58,11 @@ const ChangePassword = () => {
 				.oneOf([Yup.ref('password')], 'Las contraseñas no son iguales '),
 		}),
 		onSubmit: (changePassword) => {
-			console.log(changePassword);
 			callChangePassword({
 				password: changePassword.password,
 				confirmPassword: changePassword.confirmPassword,
 				tokenPassword,
 			});
-			console.log(errorChangePassword);
 		},
 	});
 

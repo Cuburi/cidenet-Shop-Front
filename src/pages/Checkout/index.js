@@ -20,6 +20,7 @@ import TableShoppingCart from '../../components/checkout/TableShoppingCart';
 import DialogConfirm from '../../components/checkout/DialogConfirm';
 import DialogConfirmAddress from '../../components/checkout/DialogConfirmAddress';
 import DialogSendEmail from '../../components/checkout/DialogSendEmail';
+import DialogErrorStock from '../../components/checkout/DialogErrorStock';
 
 const useStyles = makeStyles(({ theme }) => ({
 	root: {
@@ -50,6 +51,7 @@ const Checkout = () => {
 	const [openRemoveShoppingCart, setOpenRemoveShoppingCart] = useState(false);
 	const [openConfirmAddress, setOpenConfirmAddress] = useState(false);
 	const [openSendEmail, setOpenSendEmail] = useState(false);
+	const [openErrorStock, setOpenErrorStock] = useState(false);
 	const {
 		shoppingCart,
 		totalPrice,
@@ -58,12 +60,12 @@ const Checkout = () => {
 		removeShoppingCart,
 		newStock,
 		totalPriceShoppingCart,
+		checkStock,
 	} = useShoppingCart();
 	const { newSale } = useCheckout();
 	useEffect(() => {
 		totalPriceShoppingCart();
 	}, [totalPriceShoppingCart]);
-
 	const handleClickOpenRemove = () => {
 		setOpenRemoveShoppingCart(true);
 	};
@@ -92,6 +94,14 @@ const Checkout = () => {
 	const handleCloseSendEmail = () => {
 		setOpenSendEmail(false);
 		navigate('/');
+	};
+
+	const handleClickOpenErrorStock = () => {
+		setOpenErrorStock(true);
+	};
+
+	const handleCloseErrorStock = () => {
+		setOpenErrorStock(false);
 	};
 
 	useEffect(() => {
@@ -187,6 +197,8 @@ const Checkout = () => {
 					removeShoppingCartRef={removeShoppingCart}
 					newStockRef={newStock}
 					openSendEmailRef={handleClickOpenSendEmail}
+					checkStockRef={checkStock}
+					openErrorStockRef={handleClickOpenErrorStock}
 				/>
 			</Dialog>
 			<Dialog
@@ -196,8 +208,14 @@ const Checkout = () => {
 			>
 				<DialogSendEmail handleCloseRef={handleCloseSendEmail} />
 			</Dialog>
+			<Dialog
+				open={openErrorStock}
+				TransitionComponent={Transition}
+				onClose={handleCloseErrorStock}
+			>
+				<DialogErrorStock handleCloseRef={handleCloseErrorStock} />
+			</Dialog>
 			<Footer />
-			{}
 		</>
 	);
 };

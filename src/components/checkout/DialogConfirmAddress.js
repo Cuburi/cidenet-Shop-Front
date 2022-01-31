@@ -17,6 +17,8 @@ const DialogConfirmAddress = ({
 	removeShoppingCartRef,
 	newStockRef,
 	openSendEmailRef,
+	checkStockRef,
+	openErrorStockRef,
 }) => {
 	const formik = useFormik({
 		initialValues: {
@@ -27,17 +29,23 @@ const DialogConfirmAddress = ({
 		}),
 		onSubmit: async (sale) => {
 			const dateNow = new Date().toISOString();
-			await newSaleRef(
-				sale.saleAddress,
-				dateNow,
-				totalPriceRef,
-				userRef,
-				shoppingCartRef
-			);
-			newStockRef();
-			removeShoppingCartRef();
+			const haveStock = await checkStockRef();
+			if (haveStock) {
+				await newSaleRef(
+					sale.saleAddress,
+					dateNow,
+					totalPriceRef,
+					userRef,
+					shoppingCartRef
+				);
+				newStockRef();
+				removeShoppingCartRef();
+				handleCloseRef();
+				openSendEmailRef();
+			} else {
+				openErrorStockRef();
+			}
 			handleCloseRef();
-			openSendEmailRef();
 		},
 	});
 	return (
