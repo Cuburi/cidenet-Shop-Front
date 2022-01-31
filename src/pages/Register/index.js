@@ -81,7 +81,7 @@ const Register = () => {
 	const [openSendEmailChangePassword, setOpenSendEmailChangePassword] =
 		useState(false);
 	const [openConfirmSendEmail, setOpenConfirmSendEmail] = useState(false);
-	const { sendEmailChangePassword, errorChangePassword } = useChangePassword();
+	const { sendEmailChangePassword, errorSendEmail } = useChangePassword();
 	const navigate = useNavigate();
 
 	const optionsTypeId = [
@@ -107,11 +107,12 @@ const Register = () => {
 	};
 
 	const openClickDialogConfirmSendEmail = () => {
-		errorChangePassword && console.log('Entro'); //setOpenConfirmSendEmail(true);
+		setOpenConfirmSendEmail(true);
 	};
 
 	const handleCloseConfirmSendEmail = () => {
 		setOpenConfirmSendEmail(false);
+		navigate('/');
 	};
 
 	return (
@@ -310,7 +311,7 @@ const Register = () => {
 								{hasRegisterError && (
 									<Notification type="error" tittle="Error" text={message} />
 								)}
-								{errorChangePassword && (
+								{errorSendEmail && (
 									<Notification
 										type="error"
 										tittle="Error"
@@ -340,12 +341,11 @@ const Register = () => {
 					handleCloseRef={handleCloseDialogSendEmail}
 					sendEmailRef={sendEmailChangePassword}
 					openConfirmSendEmailRef={openClickDialogConfirmSendEmail}
-					errorRef={errorChangePassword}
 				/>
 			</Dialog>
 
 			<Dialog
-				open={openConfirmSendEmail}
+				open={openConfirmSendEmail && !errorSendEmail}
 				TransitionComponent={Transition}
 				onClose={handleCloseConfirmSendEmail}
 			>

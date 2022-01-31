@@ -30,7 +30,6 @@ const useCheckout = () => {
 			user,
 		});
 		if (status === 200) {
-			//setSale(data);
 			detailSale({ shoppingCart, saleRef: data });
 			callSendEmailSale(shoppingCart, user.email, data);
 		}

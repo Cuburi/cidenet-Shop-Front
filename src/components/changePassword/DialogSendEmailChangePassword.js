@@ -8,7 +8,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const DialogSendEmailChangePassword = ({ handleCloseRef, sendEmailRef }) => {
+const DialogSendEmailChangePassword = ({
+	handleCloseRef,
+	sendEmailRef,
+	openConfirmSendEmailRef,
+}) => {
 	const formik = useFormik({
 		initialValues: {
 			mailTo: '',
@@ -21,6 +25,7 @@ const DialogSendEmailChangePassword = ({ handleCloseRef, sendEmailRef }) => {
 		onSubmit: (mailTo) => {
 			sendEmailRef(mailTo);
 			handleCloseRef();
+			openConfirmSendEmailRef();
 		},
 	});
 

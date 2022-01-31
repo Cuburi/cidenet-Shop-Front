@@ -17,6 +17,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import useShoppingCart from '../../hooks/useShoppingCart';
+import { useEffect } from 'react';
 
 const GreenSwitch = styled(Switch)(({ theme }) => ({
 	'& .MuiSwitch-switchBase.Mui-checked': {
@@ -88,10 +89,14 @@ const DetailProduct = ({
 						: formik.values.amount,
 			};
 			addItemShoppingCart(addItem);
-			updateAccountVisitRef(item.size.idProduct);
+
 			handleCloseRef();
 		},
 	});
+	useEffect(() => {
+		updateAccountVisitRef(product.id);
+	}, [updateAccountVisitRef, product.id]);
+
 	return (
 		<Grid className={classes.root}>
 			<AppBar sx={{ position: 'relative' }}>
@@ -200,6 +205,12 @@ const DetailProduct = ({
 												id="amount"
 												name="amount"
 												label="Cantidad"
+												value={
+													formik.values.amount > formik.values.size.stock
+														? formik.values.size.stock
+														: formik.values.amount
+												}
+												onChange={formik.handleChange}
 											/>
 										) : (
 											<TextField

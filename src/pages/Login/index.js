@@ -34,14 +34,9 @@ const Login = () => {
 	const { login, isLogged, isLogginLoading, hasLoginError } = useUser();
 	const [openSendEmailChangePassword, setOpenSendEmailChangePassword] =
 		useState(false);
-	const [, setOpenConfirmSendEmail] = useState(false);
+	const [openConfirmSendEmail, setOpenConfirmSendEmail] = useState(false);
 	const navigate = useNavigate();
-	const {
-		sendEmailChangePassword,
-		errorSendEmail,
-		loadingSendEmail,
-		loadingEmail,
-	} = useChangePassword();
+	const { sendEmailChangePassword, errorSendEmail } = useChangePassword();
 
 	const formik = useFormik({
 		initialValues: {
@@ -71,6 +66,10 @@ const Login = () => {
 
 	const handleCloseDialogSendEmail = () => {
 		setOpenSendEmailChangePassword(false);
+	};
+
+	const openClickSendEmailChangePassword = () => {
+		setOpenConfirmSendEmail(true);
 	};
 
 	const handleCloseConfirmSendEmail = () => {
@@ -161,11 +160,7 @@ const Login = () => {
 										<LinearProgress />
 									</Box>
 								)}
-								{loadingEmail && (
-									<Box sx={{ width: '100%' }}>
-										<LinearProgress />
-									</Box>
-								)}
+
 								{hasLoginError && (
 									<Notification
 										type="error"
@@ -214,11 +209,12 @@ const Login = () => {
 				<DialogSendEmailChangePassword
 					handleCloseRef={handleCloseDialogSendEmail}
 					sendEmailRef={sendEmailChangePassword}
+					openConfirmSendEmailRef={openClickSendEmailChangePassword}
 				/>
 			</Dialog>
 
 			<Dialog
-				open={!loadingSendEmail && !errorSendEmail}
+				open={openConfirmSendEmail && !errorSendEmail}
 				TransitionComponent={Transition}
 				onClose={handleCloseConfirmSendEmail}
 			>

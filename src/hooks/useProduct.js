@@ -14,9 +14,9 @@ const useProduct = () => {
 		}
 	}, []);
 
-	const CallUpdateAccountVisit = async (idProduct) => {
+	const CallUpdateAccountVisit = useCallback(async (idProduct) => {
 		await updateAccountVisit(idProduct);
-	};
+	}, []);
 
 	return {
 		getStockSize,
