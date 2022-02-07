@@ -28,3 +28,12 @@ export const updateAccountVisit = async (idProduct) => {
 		console.log(error);
 	}
 };
+
+export const createProducts = async (product) => {
+	try {
+		const response = await instanceAxios.post('/product/create', product);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};

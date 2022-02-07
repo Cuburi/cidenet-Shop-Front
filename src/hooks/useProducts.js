@@ -3,7 +3,7 @@ import { getBrands } from '../services/brandService';
 import { getProducts, getProductsByOrder } from '../services/productsService';
 import { getSections } from '../services/sectionService';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 const useProducts = () => {
 	const [products, setproducts] = useState([]);
@@ -27,26 +27,26 @@ const useProducts = () => {
 		}
 	};
 
-	const loadBrands = async () => {
+	const loadBrands = useCallback(async () => {
 		const response = await getBrands();
 		if (response.status === 200) {
 			setBrands(response.data);
 		}
-	};
+	}, []);
 
-	const loadColors = async () => {
+	const loadColors = useCallback(async () => {
 		const response = await getColors();
 		if (response.status === 200) {
 			setColors(response.data);
 		}
-	};
+	}, []);
 
-	const loadSections = async () => {
+	const loadSections = useCallback(async () => {
 		const response = await getSections();
 		if (response.status === 200) {
 			setSections(response.data);
 		}
-	};
+	}, []);
 
 	const handleChange = (criteria, id) => {
 		const idCriteria = id;

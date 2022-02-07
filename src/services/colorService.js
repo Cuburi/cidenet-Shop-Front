@@ -8,3 +8,12 @@ export const getColors = async () => {
 		console.log(error);
 	}
 };
+
+export const createColor = async (color) => {
+	try {
+		const response = await instanceAxios.post('/color/create', color);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};

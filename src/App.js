@@ -9,13 +9,16 @@ import Register from './pages/Register';
 import Checkout from './pages/Checkout';
 import Home from './pages/Home';
 import ChangePassword from './pages/ChangePassword';
+import PageAdmin from './pages/Admin';
 
 import Navbar from './components/navbar/Navbar';
 import { useState } from 'react';
 import Notification from './components/Notification';
+import PrivateRoute from './components/routesConfig/PrivateRoute';
 
 function App() {
 	const [notification, setNotification] = useState(false);
+
 	return (
 		<UserContextProvider>
 			<ShoppingCartContextProvider>
@@ -31,6 +34,14 @@ function App() {
 							<Route
 								path="/change-password/:tokenPassword"
 								element={<ChangePassword />}
+							></Route>
+							<Route
+								path="/pageAdmin"
+								element={
+									<PrivateRoute>
+										<PageAdmin />
+									</PrivateRoute>
+								}
 							></Route>
 						</Routes>
 					</section>

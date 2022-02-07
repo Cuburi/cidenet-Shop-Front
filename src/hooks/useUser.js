@@ -18,6 +18,7 @@ const useUser = () => {
 		loading: false,
 		error: false,
 	});
+	const [isAdmin, setIsAdmin] = useState(false);
 
 	const login = useCallback(
 		async ({ userName, password }) => {
@@ -29,8 +30,11 @@ const useUser = () => {
 					setStateLogin({ loading: false, error: false });
 					setJWT(response.data.token);
 					window.sessionStorage.setItem('jwt', response.data.token);
-					setEmailUser(response.data.emai);
-					window.sessionStorage.setItem('email', response.data.email);
+					const tokenPayload = response.data.token.split('.')[1];
+					const payloadDecoded = atob(tokenPayload);
+					const valuesPayload = JSON.parse(payloadDecoded);
+					window.sessionStorage.setItem('email', valuesPayload.sub);
+					setEmailUser(valuesPayload.sub);
 				}
 			} else {
 				setStateLogin({ loading: false, error: true });
@@ -75,7 +79,9 @@ const useUser = () => {
 	}, [setJWT, setEmailUser]);
 
 	const getUserByEmail = useCallback(async (email) => {
+		console.log(email);
 		const response = await getUser(email);
+		console.log(response);
 		setUser(response.data);
 	}, []);
 
@@ -92,6 +98,8 @@ const useUser = () => {
 		isRegister: isRegister,
 		message: message,
 		user: user,
+		isAdmin,
+		setIsAdmin,
 	};
 };
 
