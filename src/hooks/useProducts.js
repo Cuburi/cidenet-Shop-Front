@@ -1,7 +1,13 @@
 import { getColors } from '../services/colorService';
 import { getBrands } from '../services/brandService';
-import { getProducts, getProductsByOrder } from '../services/productsService';
+import {
+	getProducts,
+	getProductsAdmin,
+	getProductsByOrder,
+	getProductsByOrderAdmin,
+} from '../services/productsService';
 import { getSections } from '../services/sectionService';
+import { getSizes } from '../services/sizeService';
 
 import { useState, useCallback } from 'react';
 
@@ -10,6 +16,7 @@ const useProducts = () => {
 	const [brands, setBrands] = useState([]);
 	const [colors, setColors] = useState([]);
 	const [sections, setSections] = useState([]);
+	const [sizes, setSizes] = useState([]);
 	const [searchCriteria, setSearchCriteria] = useState({});
 
 	const loadProductsByOrder = async () => {
@@ -20,12 +27,27 @@ const useProducts = () => {
 		}
 	};
 
+	const loadProductsByOrderAdmin = useCallback(async () => {
+		const response = await getProductsByOrderAdmin();
+
+		if (response.status === 200) {
+			setproducts(response.data);
+		}
+	}, []);
+
 	const loadProducts = async () => {
 		const response = await getProducts(searchCriteria);
 		if (response.status === 200) {
 			setproducts(response.data);
 		}
 	};
+
+	const loadProductsAdmin = useCallback(async () => {
+		const response = await getProductsAdmin(searchCriteria);
+		if (response.status === 200) {
+			setproducts(response.data);
+		}
+	}, [searchCriteria]);
 
 	const loadBrands = useCallback(async () => {
 		const response = await getBrands();
@@ -45,6 +67,13 @@ const useProducts = () => {
 		const response = await getSections();
 		if (response.status === 200) {
 			setSections(response.data);
+		}
+	}, []);
+
+	const loadSizes = useCallback(async () => {
+		const response = await getSizes();
+		if (response.status === 200) {
+			setSizes(response.data);
 		}
 	}, []);
 
@@ -91,17 +120,21 @@ const useProducts = () => {
 
 	return {
 		loadProductsByOrder,
+		loadProductsByOrderAdmin,
 		loadProducts,
+		loadProductsAdmin,
 		loadBrands,
 		loadColors,
 		loadSections,
 		handleChange,
 		handleChangeClick,
+		loadSizes,
 		products: products,
 		brands: brands,
 		colors: colors,
 		sections: sections,
 		searchCriteria: searchCriteria,
+		sizes: sizes,
 	};
 };
 

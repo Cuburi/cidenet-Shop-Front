@@ -5,10 +5,10 @@ import Home from '../../pages/Home';
 
 const PrivateRoute = ({ children }) => {
 	const { isLogged } = useUser();
-	const token = window.sessionStorage.getItem('jwt');
+	const token = window.sessionStorage.getItem('jwt') || null;
 	const [isAdmin, setIsAdmin] = useState(false);
 	useEffect(() => {
-		if (token !== '') {
+		if (token !== '' && token !== null) {
 			const tokenPayload = token.split('.')[1];
 			const payloadDecoded = atob(tokenPayload);
 			const valuesPayload = JSON.parse(payloadDecoded);

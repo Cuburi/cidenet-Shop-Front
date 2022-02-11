@@ -57,7 +57,9 @@ const Login = () => {
 	});
 
 	useEffect(() => {
-		if (isLogged) navigate(-1);
+		if (isLogged) {
+			return navigate(-1);
+		}
 	}, [isLogged, navigate]);
 
 	const openClickDialogSendEmail = () => {

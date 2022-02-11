@@ -9,9 +9,30 @@ export const getProducts = async (criteria) => {
 	}
 };
 
+export const getProductsAdmin = async (criteria) => {
+	try {
+		const response = await instanceAxios.post(
+			'/product/listInactive',
+			criteria
+		);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 export const getProductsByOrder = async () => {
 	try {
 		const response = await instanceAxios.get('/product/list-order');
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const getProductsByOrderAdmin = async () => {
+	try {
+		const response = await instanceAxios.get('/product/list-orderAdmin');
 		return response;
 	} catch (error) {
 		console.log(error);

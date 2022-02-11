@@ -3,30 +3,63 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
+import Grid from '@mui/material/Grid';
+import { makeStyles } from '@material-ui/core';
 
 import DialogNewProduct from '../../components/Admin/DialogNewProduct';
+import SelectFilter from '../../components/products/SelectFilter';
+import SearchLine from '../../components/products/SearchLine';
 
 import { createBrand } from '../../services/brandService';
 import { createProducts } from '../../services/productsService';
 import { createColor } from '../../services/colorService';
 
 import { useState, useEffect } from 'react';
+
 import useProducts from '../../hooks/useProducts';
+
 import Notification from '../../components/Notification';
+import Product from '../../components/products/Product';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const useStyles = makeStyles((theme) => ({
+	grow: {
+		flexGrow: 1,
+	},
+}));
+
 const PageAdmin = () => {
-	const { loadBrands, loadColors, loadSections, colors, brands, sections } =
-		useProducts();
+	const classes = useStyles();
+	const {
+		loadProductsAdmin,
+		loadProductsByOrderAdmin,
+		loadBrands,
+		loadColors,
+		loadSections,
+		products,
+		colors,
+		brands,
+		sections,
+		handleChange,
+		searchCriteria,
+	} = useProducts();
 
 	useEffect(() => {
 		loadBrands();
 		loadColors();
 		loadSections();
 	}, [loadBrands, loadColors, loadSections]);
+
+	useEffect(() => {
+		if (Object.keys(searchCriteria).length === 0) {
+			loadProductsByOrderAdmin();
+		} else {
+			loadProductsAdmin();
+		}
+	}, [loadProductsByOrderAdmin, loadProductsAdmin, searchCriteria]);
 
 	const [opendialogNewProduct, setOpenDialogNewProduct] = useState(false);
 	const [addSuccess, setAddSuccess] = useState({
@@ -45,9 +78,59 @@ const PageAdmin = () => {
 
 	return (
 		<>
-			<Button variant="outlined" onClick={handleClickOpenNewProduct}>
-				Open form dialog
-			</Button>
+			<Grid
+				container
+				spacing={1}
+				style={{ flexWrap: 'wrap', margin: '0', width: '100%' }}
+			>
+				<Grid
+					item
+					container
+					sx={{
+						width: '90%',
+						marginLeft: 'auto',
+						marginRight: 'auto',
+						padding: '10px',
+					}}
+				>
+					<SelectFilter
+						valueCriteria={brands}
+						text={'Marcas'}
+						id={'brand'}
+						handleChangeRef={handleChange}
+					/>
+
+					<SelectFilter
+						valueCriteria={colors}
+						text={'Colores'}
+						id={'color'}
+						handleChangeRef={handleChange}
+					/>
+
+					<Button variant="outlined" onClick={handleClickOpenNewProduct}>
+						Nuevo producto
+					</Button>
+
+					<div className={classes.grow}></div>
+
+					<SearchLine handleChangeRef={handleChange} id={'description'} />
+				</Grid>
+
+				{products.map((product) => (
+					<Grid
+						item
+						xs={6}
+						sm={3}
+						container
+						justify="center"
+						alignItems="center"
+						direction="column"
+						key={product.id}
+					>
+						<Product product={product} isAdmin={true} />
+					</Grid>
+				))}
+			</Grid>
 
 			<Dialog
 				open={opendialogNewProduct}

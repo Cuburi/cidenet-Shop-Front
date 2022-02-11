@@ -21,10 +21,10 @@ import { useEffect } from 'react';
 
 const GreenSwitch = styled(Switch)(({ theme }) => ({
 	'& .MuiSwitch-switchBase.Mui-checked': {
-		color: theme.palette.primary.main,
+		color: 'black',
 	},
 	'& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-		backgroundColor: theme.palette.primary.main,
+		backgroundColor: 'black',
 	},
 }));
 

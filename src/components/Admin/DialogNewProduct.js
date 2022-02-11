@@ -212,15 +212,6 @@ function DialogNewProduct({
 								onChange={formik.handleChange}
 								error={formik.errors.section && Boolean(formik.errors.section)}
 								helperText={formik.touched.section && formik.errors.section}
-								InputProps={{
-									endAdornment: (
-										<InputAdornment position="end">
-											<IconButton>
-												<AddIcon />
-											</IconButton>
-										</InputAdornment>
-									),
-								}}
 							>
 								{sectionRef.map((section) => (
 									<MenuItem value={section} key={section.id}>

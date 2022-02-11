@@ -45,7 +45,9 @@ const Register = () => {
 			address: '',
 		},
 		validationSchema: Yup.object({
-			name: Yup.string().required('Nombre es requerido'),
+			name: Yup.string()
+				.required('Nombre es requerido')
+				.matches(/^[aA-zZ\s]+$/, 'Solo se permiten letras para este campo '),
 			email: Yup.string()
 				.email('Email no valido')
 				.required('El email es requerido'),
@@ -60,8 +62,12 @@ const Register = () => {
 				.required('Confirmar la contraseña')
 				.oneOf([Yup.ref('password')], 'Las contraseñas no son iguales '),
 			typeId: Yup.string().required('Tipo de identificación requerido'),
-			document: Yup.number().required('documento requerido'),
-			phone: Yup.number().required('Número de teléfono requerido'),
+			document: Yup.number()
+				.required('documento requerido')
+				.min(10000, 'Documento minimo de 5 digitos'),
+			phone: Yup.number()
+				.required('Número de teléfono requerido')
+				.min(1000000, 'Telefono minimo de 7 digitos'),
 			address: Yup.string().required('Dirección requerida'),
 		}),
 		onSubmit: (user) => {
@@ -76,8 +82,14 @@ const Register = () => {
 		},
 	});
 
-	const { register, isRegister, isRegisterLoading, hasRegisterError, message } =
-		useUser();
+	const {
+		register,
+		isRegister,
+		isRegisterLoading,
+		hasRegisterError,
+		message,
+		isLogged,
+	} = useUser();
 	const [openSendEmailChangePassword, setOpenSendEmailChangePassword] =
 		useState(false);
 	const [openConfirmSendEmail, setOpenConfirmSendEmail] = useState(false);
@@ -94,8 +106,15 @@ const Register = () => {
 			label: 'Tarjeta de identidad',
 		},
 	];
+
 	useEffect(() => {
-		if (isRegister) navigate('/login');
+		if (isLogged) {
+			return navigate('/');
+		}
+	}, [isLogged, navigate]);
+
+	useEffect(() => {
+		if (isRegister) navigate('/login', { replace: true });
 	}, [isRegister, navigate]);
 
 	const openClickDialogSendEmail = () => {

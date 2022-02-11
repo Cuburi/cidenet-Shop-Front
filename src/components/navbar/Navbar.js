@@ -4,7 +4,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
@@ -15,6 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import CheckroomIcon from '@mui/icons-material/Checkroom';
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -78,19 +78,35 @@ const Navbar = ({ notificationRef }) => {
 	useEffect(() => {
 		totalPriceShoppingCart();
 	}, [totalPriceShoppingCart]);
+
+	const token = window.sessionStorage.getItem('jwt') || null;
+	const [isAdmin, setIsAdmin] = useState(false);
+	useEffect(() => {
+		if (token !== '' && token !== null) {
+			const tokenPayload = token.split('.')[1];
+			const payloadDecoded = atob(tokenPayload);
+			const valuesPayload = JSON.parse(payloadDecoded);
+			const roles = valuesPayload.roles;
+			setIsAdmin(() => roles.some((element) => element === 'ROLE_ADMIN'));
+		} else {
+			setIsAdmin(false);
+		}
+	}, [setIsAdmin, token]);
+
 	return (
 		<Box>
 			<AppBar position="fixed">
 				<Toolbar>
-					<IconButton
-						size="large"
-						edge="start"
-						color="inherit"
-						aria-label="menu"
-						sx={{ mr: 2 }}
-					>
-						<MenuIcon />
-					</IconButton>
+					{isAdmin && (
+						<Button
+							variant="outlined"
+							color="secondary"
+							startIcon={<CheckroomIcon />}
+							onClick={() => navigate('/pageAdmin')}
+						>
+							Administrar
+						</Button>
+					)}
 
 					<div className={classes.grow}></div>
 					<IconButton onClick={() => navigate('/')}>

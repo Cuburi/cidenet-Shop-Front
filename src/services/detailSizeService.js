@@ -30,3 +30,13 @@ export const getStockById = async (idProduct, idSize) => {
 		console.log(error);
 	}
 };
+
+export const createStock = async (detailSize) => {
+	console.log(detailSize);
+	try {
+		const response = await instanceAxios.post('/sizeStock/create', detailSize);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};

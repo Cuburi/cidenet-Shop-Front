@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import Grid from '@mui/material/Grid';
 
 import { useEffect } from 'react';
 import useProducts from '../../hooks/useProducts';
