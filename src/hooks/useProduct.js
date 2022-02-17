@@ -9,8 +9,12 @@ const useProduct = () => {
 
 	const getStockSize = useCallback(async (id) => {
 		const response = await getStock(id);
-		if (response.status === 200) {
-			setStock(response.data);
+		if (response) {
+			if (response.status === 200) {
+				setStock(response.data);
+			}
+		} else {
+			setStock([]);
 		}
 	}, []);
 

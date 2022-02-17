@@ -19,13 +19,13 @@ const useProducts = () => {
 	const [sizes, setSizes] = useState([]);
 	const [searchCriteria, setSearchCriteria] = useState({});
 
-	const loadProductsByOrder = async () => {
+	const loadProductsByOrder = useCallback(async () => {
 		const response = await getProductsByOrder();
 
 		if (response.status === 200) {
 			setproducts(response.data);
 		}
-	};
+	}, []);
 
 	const loadProductsByOrderAdmin = useCallback(async () => {
 		const response = await getProductsByOrderAdmin();
@@ -35,12 +35,12 @@ const useProducts = () => {
 		}
 	}, []);
 
-	const loadProducts = async () => {
+	const loadProducts = useCallback(async () => {
 		const response = await getProducts(searchCriteria);
 		if (response.status === 200) {
 			setproducts(response.data);
 		}
-	};
+	}, [searchCriteria]);
 
 	const loadProductsAdmin = useCallback(async () => {
 		const response = await getProductsAdmin(searchCriteria);

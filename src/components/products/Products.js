@@ -38,15 +38,13 @@ const Products = () => {
 		} else {
 			loadProducts();
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchCriteria]);
+	}, [searchCriteria, loadProducts, loadProductsByOrder]);
 
 	useEffect(() => {
 		loadBrands();
 		loadColors();
 		loadSections();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [loadBrands, loadColors, loadSections]);
 
 	return (
 		<div>

@@ -13,7 +13,12 @@ import LinearProgress from '@mui/material/LinearProgress';
 import FormControl from '@mui/material/FormControl';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import { IMaskInput } from 'react-imask';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -30,6 +35,22 @@ import DialogConfirmSendEmail from '../../components/changePassword/DialogConfir
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+	const { onChange, ...other } = props;
+	return (
+		<IMaskInput
+			{...other}
+			mask={Number}
+			definitions={{
+				'#': /[1-9]/,
+			}}
+			inputRef={ref}
+			onAccept={(value) => onChange({ target: { name: props.name, value } })}
+			overwrite
+		/>
+	);
 });
 
 const Register = () => {
@@ -81,6 +102,20 @@ const Register = () => {
 			register({ name, email, password, typeId, document, phone, address });
 		},
 	});
+
+	const [values, setValues] = React.useState({
+		showPassword: false,
+	});
+	const handleClickShowPassword = () => {
+		setValues({
+			...values,
+			showPassword: !values.showPassword,
+		});
+	};
+
+	const handleMouseDownPassword = (event) => {
+		event.preventDefault();
+	};
 
 	const {
 		register,
@@ -206,13 +241,30 @@ const Register = () => {
 									fullWidth
 									name="password"
 									label="Contraseña"
-									type="password"
+									type={values.showPassword ? 'text' : 'password'}
 									id="password"
 									error={
 										formik.errors.password && Boolean(formik.errors.password)
 									}
 									helperText={formik.touched.password && formik.errors.password}
 									onChange={formik.handleChange}
+									InputProps={{
+										endAdornment: (
+											<InputAdornment position="end">
+												<IconButton
+													aria-label="toggle password visibility"
+													onClick={handleClickShowPassword}
+													onMouseDown={handleMouseDownPassword}
+												>
+													{values.showPassword ? (
+														<VisibilityOff color="primary" />
+													) : (
+														<Visibility color="primary" />
+													)}
+												</IconButton>
+											</InputAdornment>
+										),
+									}}
 								/>
 								<TextField
 									value={formik.values.passwordConfirm}
@@ -220,7 +272,7 @@ const Register = () => {
 									fullWidth
 									name="passwordConfirm"
 									label="Confirmación de contraseña"
-									type="password"
+									type={values.showPassword ? 'text' : 'password'}
 									id="passwordConfirm"
 									error={
 										formik.errors.passwordConfirm &&
@@ -231,6 +283,23 @@ const Register = () => {
 										formik.errors.passwordConfirm
 									}
 									onChange={formik.handleChange}
+									InputProps={{
+										endAdornment: (
+											<InputAdornment position="end">
+												<IconButton
+													aria-label="toggle password visibility"
+													onClick={handleClickShowPassword}
+													onMouseDown={handleMouseDownPassword}
+												>
+													{values.showPassword ? (
+														<VisibilityOff color="primary" />
+													) : (
+														<Visibility color="primary" />
+													)}
+												</IconButton>
+											</InputAdornment>
+										),
+									}}
 								/>
 								<Grid
 									container
@@ -279,12 +348,14 @@ const Register = () => {
 												formik.touched.document && formik.errors.document
 											}
 											onChange={formik.handleChange}
+											InputProps={{
+												inputComponent: TextMaskCustom,
+											}}
 										/>
 									</Grid>
 								</Grid>
 
 								<TextField
-									inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
 									value={formik.values.phone}
 									margin="normal"
 									fullWidth
@@ -295,6 +366,9 @@ const Register = () => {
 									error={formik.errors.phone && Boolean(formik.errors.phone)}
 									helperText={formik.touched.phone && formik.errors.phone}
 									onChange={formik.handleChange}
+									InputProps={{
+										inputComponent: TextMaskCustom,
+									}}
 								/>
 
 								<TextField

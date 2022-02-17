@@ -16,6 +16,8 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 
+import jwt_decode from 'jwt-decode';
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -83,10 +85,8 @@ const Navbar = ({ notificationRef }) => {
 	const [isAdmin, setIsAdmin] = useState(false);
 	useEffect(() => {
 		if (token !== '' && token !== null) {
-			const tokenPayload = token.split('.')[1];
-			const payloadDecoded = atob(tokenPayload);
-			const valuesPayload = JSON.parse(payloadDecoded);
-			const roles = valuesPayload.roles;
+			var decoded = jwt_decode(token);
+			const roles = decoded.roles;
 			setIsAdmin(() => roles.some((element) => element === 'ROLE_ADMIN'));
 		} else {
 			setIsAdmin(false);

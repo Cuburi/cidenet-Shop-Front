@@ -66,15 +66,15 @@ const Checkout = () => {
 	useEffect(() => {
 		totalPriceShoppingCart();
 	}, [totalPriceShoppingCart]);
-	const handleClickOpenRemove = () => {
-		setOpenRemoveShoppingCart(true);
-	};
 
 	const handleClickOpenConfirmAddress = () => {
 		getUserByEmail(window.sessionStorage.getItem('email'));
 		setOpenConfirmAddress(true);
 	};
 
+	const handleClickOpenRemove = () => {
+		setOpenRemoveShoppingCart(true);
+	};
 	const handleCloseRemove = (confirm) => {
 		if (confirm) {
 			removeShoppingCart();
@@ -106,8 +106,7 @@ const Checkout = () => {
 
 	useEffect(() => {
 		isLogged && getUserByEmail(window.sessionStorage.getItem('email'));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [isLogged, getUserByEmail]);
 
 	return (
 		<>
@@ -179,7 +178,7 @@ const Checkout = () => {
 			<Dialog
 				open={openRemoveShoppingCart}
 				TransitionComponent={Transition}
-				onClose={handleCloseRemove}
+				onClose={() => handleCloseRemove(false)}
 			>
 				<DialogConfirm handleCloseRef={handleCloseRemove} />
 			</Dialog>

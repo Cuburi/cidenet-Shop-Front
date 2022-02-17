@@ -32,9 +32,30 @@ export const getStockById = async (idProduct, idSize) => {
 };
 
 export const createStock = async (detailSize) => {
-	console.log(detailSize);
 	try {
 		const response = await instanceAxios.post('/sizeStock/create', detailSize);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const deleteProducts = async (idProduct) => {
+	try {
+		const response = await instanceAxios.delete(
+			`/sizeStock/delete/${idProduct}`
+		);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const deleteStock = async (idSize, idProduct) => {
+	try {
+		const response = await instanceAxios.delete(
+			`/sizeStock/deleteStock/${idSize}/${idProduct}`
+		);
 		return response;
 	} catch (error) {
 		console.log(error);

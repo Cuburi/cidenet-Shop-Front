@@ -11,7 +11,7 @@ import SelectFilter from '../../components/products/SelectFilter';
 import SearchLine from '../../components/products/SearchLine';
 
 import { createBrand } from '../../services/brandService';
-import { createProducts } from '../../services/productsService';
+import { createProducts, updateProduct } from '../../services/productsService';
 import { createColor } from '../../services/colorService';
 
 import { useState, useEffect } from 'react';
@@ -61,19 +61,38 @@ const PageAdmin = () => {
 		}
 	}, [loadProductsByOrderAdmin, loadProductsAdmin, searchCriteria]);
 
-	const [opendialogNewProduct, setOpenDialogNewProduct] = useState(false);
+	const [openDialogNewProduct, setOpenDialogNewProduct] = useState(false);
+
+	const [openDialogEditProduct, setOpenDialogEditProduct] = useState(false);
+	const [editProduct, setEditProduct] = useState();
+	const [editSuccess, setEditSuccess] = useState({
+		error: false,
+		success: false,
+	});
+
 	const [addSuccess, setAddSuccess] = useState({
 		error: false,
 		success: false,
 	});
 
-	const handleClickOpenNewProduct = () => {
+	const handleClickOpenNewProduct = (edit, product) => {
 		setAddSuccess({ error: false, success: false });
 		setOpenDialogNewProduct(true);
 	};
 
 	const handleCloseNewProduct = () => {
 		setOpenDialogNewProduct(false);
+	};
+
+	const handleClickOpenEditProduct = (product) => {
+		setEditSuccess({ error: false, success: false });
+		setEditProduct(product);
+
+		setOpenDialogEditProduct(true);
+	};
+
+	const handleCloseEditProduct = () => {
+		setOpenDialogEditProduct(false);
 	};
 
 	return (
@@ -127,13 +146,18 @@ const PageAdmin = () => {
 						direction="column"
 						key={product.id}
 					>
-						<Product product={product} isAdmin={true} />
+						<Product
+							product={product}
+							isAdmin={true}
+							loadProductsRef={loadProductsByOrderAdmin}
+							setEditProductRef={handleClickOpenEditProduct}
+						/>
 					</Grid>
 				))}
 			</Grid>
 
 			<Dialog
-				open={opendialogNewProduct}
+				open={openDialogNewProduct}
 				TransitionComponent={Transition}
 				onClose={handleCloseNewProduct}
 			>
@@ -148,12 +172,44 @@ const PageAdmin = () => {
 					newBrandRef={createBrand}
 					newColorRef={createColor}
 					setAddSuccessRef={setAddSuccess}
+					loadProductsRef={loadProductsByOrderAdmin}
 				/>
 			</Dialog>
+			<Dialog
+				open={openDialogEditProduct}
+				TransitionComponent={Transition}
+				onClose={handleCloseEditProduct}
+			>
+				<DialogNewProduct
+					handleclosRef={handleCloseEditProduct}
+					colorRef={colors}
+					loadColorsRef={loadColors}
+					brandRef={brands}
+					loadBrandsRef={loadBrands}
+					sectionRef={sections}
+					newProductRef={updateProduct}
+					newBrandRef={createBrand}
+					newColorRef={createColor}
+					setAddSuccessRef={setEditSuccess}
+					product={editProduct}
+					loadProductsRef={loadProductsByOrderAdmin}
+				/>
+			</Dialog>
+
 			{addSuccess.success ? (
 				<Notification type="success" text="Producto creado correctamente" />
 			) : (
 				addSuccess.error && (
+					<Notification type="error" tittle="Error" text="Producto ya existe" />
+				)
+			)}
+			{editSuccess.success ? (
+				<Notification
+					type="success"
+					text="Producto actualizado correctamente"
+				/>
+			) : (
+				editSuccess.error && (
 					<Notification type="error" tittle="Error" text="Producto ya existe" />
 				)
 			)}

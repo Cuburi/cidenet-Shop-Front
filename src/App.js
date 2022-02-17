@@ -50,7 +50,7 @@ function App() {
 					<Notification
 						type="error"
 						tittle="Error"
-						text="email y/o contraseñas incorrectas"
+						text="No hay productos en el carrito"
 					/>
 				)}
 			</ShoppingCartContextProvider>

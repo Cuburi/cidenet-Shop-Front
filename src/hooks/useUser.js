@@ -5,6 +5,8 @@ import Context from '../context/UserContext';
 import { loginUser, getUser } from '../services/loginService';
 import { registerUser } from '../services/registerService';
 
+import jwt_decode from 'jwt-decode';
+
 const useUser = () => {
 	const { jwt, setJWT, setEmailUser } = useContext(Context);
 	const [isRegister, setIsRegister] = useState(false);
@@ -30,11 +32,9 @@ const useUser = () => {
 					setStateLogin({ loading: false, error: false });
 					setJWT(response.data.token);
 					window.sessionStorage.setItem('jwt', response.data.token);
-					const tokenPayload = response.data.token.split('.')[1];
-					const payloadDecoded = atob(tokenPayload);
-					const valuesPayload = JSON.parse(payloadDecoded);
-					window.sessionStorage.setItem('email', valuesPayload.sub);
-					setEmailUser(valuesPayload.sub);
+					var decoded = jwt_decode(response.data.token);
+					window.sessionStorage.setItem('email', decoded.sub);
+					setEmailUser(decoded.sub);
 				}
 			} else {
 				setStateLogin({ loading: false, error: true });

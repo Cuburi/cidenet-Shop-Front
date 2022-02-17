@@ -58,3 +58,15 @@ export const createProducts = async (product) => {
 		console.log(error);
 	}
 };
+
+export const updateProduct = async (idProduct, product) => {
+	try {
+		const response = await instanceAxios.put(
+			`/product/update/${idProduct}`,
+			product
+		);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+};

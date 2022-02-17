@@ -22,9 +22,11 @@ import useProducts from '../../hooks/useProducts';
 
 import DetailProduct from './DetailProduct';
 import DialogNewStock from '../Admin/DialogNewStock';
+import DialogConfirmDelete from '../../components/Admin/DialogConfirmDelete';
+import Notification from '../Notification';
 
 import { createStock } from '../../services/detailSizeService';
-import Notification from '../Notification';
+import { deleteProducts } from '../../services/detailSizeService';
 
 const useStyles = makeStyles(() => ({
 	price: {
@@ -39,12 +41,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Product = ({ product, isAdmin = false }) => {
+const Product = ({
+	product,
+	isAdmin = false,
+	loadProductsRef,
+	setEditProductRef,
+}) => {
 	const { getStockSize, stock, CallUpdateAccountVisit } = useProduct();
 	const { loadSizes, sizes } = useProducts();
 	const [open, setOpen] = useState(false);
 	const [openNewStock, setOpenNewStock] = useState(false);
+	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 	const [addSuccess, setAddSuccess] = useState({
+		error: false,
+		success: false,
+	});
+	const [removeSuccess, setRemoveSuccess] = useState({
 		error: false,
 		success: false,
 	});
@@ -63,7 +75,33 @@ const Product = ({ product, isAdmin = false }) => {
 	};
 
 	const handleCloseNewStock = () => {
+		loadProductsRef();
 		setOpenNewStock(false);
+	};
+
+	const handleClickOpenDeleteProduct = () => {
+		setRemoveSuccess({
+			error: false,
+			success: false,
+		});
+		setOpenDeleteDialog(true);
+	};
+
+	const handleCloseDeleteProduct = async (confirm) => {
+		if (confirm) {
+			const response = await deleteProducts(product.id);
+			response
+				? setRemoveSuccess({
+						error: false,
+						success: true,
+				  })
+				: setRemoveSuccess({
+						error: true,
+						success: false,
+				  });
+		}
+		loadProductsRef();
+		setOpenDeleteDialog(false);
 	};
 
 	useEffect(() => {
@@ -71,6 +109,10 @@ const Product = ({ product, isAdmin = false }) => {
 	}, [loadSizes]);
 
 	const classes = useStyles();
+
+	const editProduct = () => {
+		setEditProductRef(product);
+	};
 
 	return (
 		<>
@@ -132,26 +174,49 @@ const Product = ({ product, isAdmin = false }) => {
 					sx={{ maxWidth: 200, maxHeight: 486 }}
 					style={{ border: 'none', boxShadow: 'none' }}
 				>
-					<CardActionArea onClick={handleClickOpen}>
-						<CardMedia
-							component="img"
-							height="300"
-							image={`data:image/jpeg;base64,${product.image}`}
-							alt="green iguana"
-						/>
-					</CardActionArea>
+					{product.active ? (
+						<CardActionArea onClick={handleClickOpen}>
+							<CardMedia
+								component="img"
+								height="300"
+								image={`data:image/jpeg;base64,${product.image}`}
+								alt="green iguana"
+							/>
+						</CardActionArea>
+					) : (
+						<CardActionArea>
+							<CardMedia
+								component="img"
+								height="300"
+								image={`data:image/jpeg;base64,${product.image}`}
+								alt="green iguana"
+							/>
+						</CardActionArea>
+					)}
 
-					<CardContent className={classes.footerCard}>
-						<Stack direction="row" spacing={1}>
+					<CardContent
+						className={classes.footerCard}
+						style={{ backgroundColor: !product.active && 'gray' }}
+					>
+						<Stack direction="row" spacing={3}>
 							<IconButton color="primary" onClick={handleClickOpenNewStock}>
 								<AddIcon />
 							</IconButton>
-							<IconButton color="primary">
+							<IconButton color="primary" onClick={editProduct}>
 								<EditIcon />
 							</IconButton>
-							<IconButton color="primary">
-								<DeleteIcon />
-							</IconButton>
+							{!product.active ? (
+								<IconButton disabled color="primary">
+									<DeleteIcon />
+								</IconButton>
+							) : (
+								<IconButton
+									color="primary"
+									onClick={handleClickOpenDeleteProduct}
+								>
+									<DeleteIcon />
+								</IconButton>
+							)}
 						</Stack>
 					</CardContent>
 				</Card>
@@ -184,6 +249,19 @@ const Product = ({ product, isAdmin = false }) => {
 					createStockRef={createStock}
 					setAddSuccessRef={setAddSuccess}
 					productRef={product}
+					stockRef={stock}
+					getStockSizeRef={getStockSize}
+				/>
+			</Dialog>
+
+			<Dialog
+				open={openDeleteDialog}
+				TransitionComponent={Transition}
+				onClose={() => handleCloseDeleteProduct(false)}
+			>
+				<DialogConfirmDelete
+					handleCloseRef={handleCloseDeleteProduct}
+					textRef={'producto'}
 				/>
 			</Dialog>
 			{addSuccess.success ? (
@@ -191,6 +269,17 @@ const Product = ({ product, isAdmin = false }) => {
 			) : (
 				addSuccess.error && (
 					<Notification type="error" tittle="Error" text=" ya existe" />
+				)
+			)}
+			{removeSuccess.success ? (
+				<Notification type="success" text="Producto eliminado correctamente" />
+			) : (
+				removeSuccess.error && (
+					<Notification
+						type="error"
+						tittle="Error"
+						text="Error al eliminar el producto"
+					/>
 				)
 			)}
 		</>

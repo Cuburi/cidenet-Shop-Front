@@ -14,6 +14,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
 
+import NumberFormat from 'react-number-format';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -39,6 +40,31 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
+	props,
+	ref
+) {
+	const { onChange, ...other } = props;
+
+	return (
+		<NumberFormat
+			{...other}
+			getInputRef={ref}
+			onValueChange={(values) => {
+				onChange({
+					target: {
+						name: props.name,
+						value: values.value,
+					},
+				});
+			}}
+			thousandSeparator
+			isNumericString
+			prefix="$"
+		/>
+	);
+});
+
 function DialogNewProduct({
 	handleclosRef,
 	colorRef = [],
@@ -50,42 +76,66 @@ function DialogNewProduct({
 	loadBrandsRef,
 	loadColorsRef,
 	setAddSuccessRef,
+	product = '',
+	loadProductsRef,
 }) {
 	const classes = useStyles();
 	const [dialogNewProp, setDialogNewProp] = useState(false);
-	const [preloadImage, setPreloadImage] = useState('');
+	const [preloadImage, setPreloadImage] = useState(
+		product === '' ? '' : product.image
+	);
 	const [prop, setProp] = useState('');
 	const [addPropSuccess, setAddPropSuccess] = useState({
 		error: false,
 		success: false,
 	});
+
 	const formik = useFormik({
-		initialValues: {
-			name: '',
-			salePrice: '',
-			brand: '',
-			section: '',
-			color: '',
-			description: '',
-			image: '',
-		},
+		initialValues:
+			product === ''
+				? {
+						name: '',
+						salePrice: '',
+						brand: '',
+						section: '',
+						color: '',
+						description: '',
+						image: '',
+				  }
+				: {
+						name: product.name,
+						salePrice: product.salePrice,
+						brand: brandRef.find((brand) => brand.name === product.brand.name),
+						section: sectionRef.find(
+							(section) => section.name === product.section.name
+						),
+						color: colorRef.find((color) => color.name === product.color.name),
+						description: product.description,
+						image: product.image,
+				  },
 		validationSchema: Yup.object({
 			name: Yup.string().required('Nombre obligatorio'),
-			salePrice: Yup.number().required('Precio obligatorio.'),
+			salePrice: Yup.number()
+				.required('Precio obligatorio.')
+				.min(10000, 'Precio minimo 10,000	'),
 			brand: Yup.object().required('Marca requerida.'),
 			section: Yup.object().required('Sección requerida.'),
 			color: Yup.object().required('Color requerido.'),
 			description: Yup.string().required('Descripción requerida.'),
 			image: Yup.string().required('imagen obligatoria'),
 		}),
-		onSubmit: async (product) => {
-			const newProduct = { ...product, accountVisit: 0 };
-			const response = await newProductRef(newProduct);
+		onSubmit: async (formProduct) => {
+			const newProduct = { ...formProduct, accountVisit: 0 };
+			const response =
+				product === ''
+					? await newProductRef(newProduct)
+					: await newProductRef(product.id, newProduct);
 			if (response) {
 				setAddSuccessRef({ error: false, success: true });
 			} else {
 				setAddSuccessRef({ error: true, success: false });
 			}
+			loadProductsRef();
 			handleclosRef();
 		},
 	});
@@ -146,6 +196,7 @@ function DialogNewProduct({
 								label="Marca"
 								name="brand"
 								fullWidth
+								defaultValue={product.brand}
 								value={formik.values.brand}
 								onChange={formik.handleChange}
 								error={formik.errors.brand && Boolean(formik.errors.brand)}
@@ -177,6 +228,7 @@ function DialogNewProduct({
 								label="Color"
 								name="color"
 								fullWidth
+								defaultValue={'a'}
 								value={formik.values.color}
 								onChange={formik.handleChange}
 								error={formik.errors.color && Boolean(formik.errors.color)}
@@ -233,6 +285,9 @@ function DialogNewProduct({
 									formik.errors.salePrice && Boolean(formik.errors.salePrice)
 								}
 								helperText={formik.touched.salePrice && formik.errors.salePrice}
+								InputProps={{
+									inputComponent: NumberFormatCustom,
+								}}
 							/>
 						</Grid>
 					</Grid>
