@@ -33,6 +33,9 @@ import imageRegister from '../../assets/Login.jpg';
 import DialogSendEmailChangePassword from '../../components/changePassword/DialogSendEmailChangePassword';
 import DialogConfirmSendEmail from '../../components/changePassword/DialogConfirmSendEmail';
 
+import { sendEmailConfirmAccount } from '../../services/registerService';
+import DialogSendEmail from '../../components/checkout/DialogSendEmail';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -91,7 +94,7 @@ const Register = () => {
 				.min(1000000, 'Telefono minimo de 7 digitos'),
 			address: Yup.string().required('Dirección requerida'),
 		}),
-		onSubmit: (user) => {
+		onSubmit: async (user) => {
 			const name = user.name;
 			const email = user.email;
 			const password = user.password;
@@ -99,10 +102,20 @@ const Register = () => {
 			const document = user.document;
 			const phone = user.phone;
 			const address = user.address;
-			register({ name, email, password, typeId, document, phone, address });
+			await register({
+				name,
+				email,
+				password,
+				typeId,
+				document,
+				phone,
+				address,
+			});
+			sendEmailConfirmAccount({ mailTo: email });
+			handleClickOpenSendEmail();
 		},
 	});
-
+	const textEmail = 'Te hemos enviado un correo para que actives tu contraseña';
 	const [values, setValues] = React.useState({
 		showPassword: false,
 	});
@@ -117,18 +130,13 @@ const Register = () => {
 		event.preventDefault();
 	};
 
-	const {
-		register,
-		isRegister,
-		isRegisterLoading,
-		hasRegisterError,
-		message,
-		isLogged,
-	} = useUser();
+	const { register, isRegisterLoading, hasRegisterError, message, isLogged } =
+		useUser();
 	const [openSendEmailChangePassword, setOpenSendEmailChangePassword] =
 		useState(false);
 	const [openConfirmSendEmail, setOpenConfirmSendEmail] = useState(false);
 	const { sendEmailChangePassword, errorSendEmail } = useChangePassword();
+	const [openSendEmail, setOpenSendEmail] = useState(false);
 	const navigate = useNavigate();
 
 	const optionsTypeId = [
@@ -148,10 +156,6 @@ const Register = () => {
 		}
 	}, [isLogged, navigate]);
 
-	useEffect(() => {
-		if (isRegister) navigate('/login', { replace: true });
-	}, [isRegister, navigate]);
-
 	const openClickDialogSendEmail = () => {
 		setOpenSendEmailChangePassword(true);
 	};
@@ -166,6 +170,15 @@ const Register = () => {
 
 	const handleCloseConfirmSendEmail = () => {
 		setOpenConfirmSendEmail(false);
+		navigate('/');
+	};
+
+	const handleClickOpenSendEmail = () => {
+		setOpenSendEmail(true);
+	};
+
+	const handleCloseSendEmail = () => {
+		setOpenSendEmail(false);
 		navigate('/');
 	};
 
@@ -438,11 +451,22 @@ const Register = () => {
 			</Dialog>
 
 			<Dialog
-				open={openConfirmSendEmail && !errorSendEmail}
+				open={openConfirmSendEmail}
 				TransitionComponent={Transition}
 				onClose={handleCloseConfirmSendEmail}
 			>
 				<DialogConfirmSendEmail handleCloseRef={handleCloseConfirmSendEmail} />
+			</Dialog>
+
+			<Dialog
+				open={openSendEmail}
+				TransitionComponent={Transition}
+				onClose={handleCloseSendEmail}
+			>
+				<DialogSendEmail
+					handleCloseRef={handleCloseSendEmail}
+					textRef={textEmail}
+				/>
 			</Dialog>
 		</>
 	);

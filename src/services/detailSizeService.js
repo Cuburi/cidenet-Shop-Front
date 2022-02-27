@@ -25,6 +25,7 @@ export const getStockById = async (idProduct, idSize) => {
 		const response = await instanceAxios.get(
 			`/sizeStock/${idSize}/${idProduct}`
 		);
+
 		return response;
 	} catch (error) {
 		console.log(error);

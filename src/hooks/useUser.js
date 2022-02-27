@@ -79,9 +79,7 @@ const useUser = () => {
 	}, [setJWT, setEmailUser]);
 
 	const getUserByEmail = useCallback(async (email) => {
-		console.log(email);
 		const response = await getUser(email);
-		console.log(response);
 		setUser(response.data);
 	}, []);
 

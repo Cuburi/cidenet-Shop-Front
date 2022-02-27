@@ -4,14 +4,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 
-const DialogSendEmail = ({ handleCloseRef }) => {
+const DialogSendEmail = ({ handleCloseRef, textRef }) => {
 	return (
 		<>
 			<DialogTitle>{'Compra Realizada correctamente'}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-slide-description">
-					Muchas gracias por confiar en nosotros y permitirnos acompañarte en tu
-					día a día. Te hemos enviado un correo con la información de la compra.
+					{textRef}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>

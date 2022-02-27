@@ -10,6 +10,7 @@ import Checkout from './pages/Checkout';
 import Home from './pages/Home';
 import ChangePassword from './pages/ChangePassword';
 import PageAdmin from './pages/Admin';
+import ActiveAccountPage from './pages/ActiveAccount';
 
 import Navbar from './components/navbar/Navbar';
 import { useState } from 'react';
@@ -34,6 +35,10 @@ function App() {
 							<Route
 								path="/change-password/:tokenPassword"
 								element={<ChangePassword />}
+							></Route>
+							<Route
+								path="/active-account/:tokenActive"
+								element={<ActiveAccountPage />}
 							></Route>
 							<Route
 								path="/pageAdmin"

@@ -30,6 +30,7 @@ const DialogConfirmAddress = ({
 		onSubmit: async (sale) => {
 			const dateNow = new Date().toISOString();
 			const haveStock = await checkStockRef();
+			console.log(haveStock);
 			if (haveStock) {
 				await newSaleRef(
 					sale.saleAddress,

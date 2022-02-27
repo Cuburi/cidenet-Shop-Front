@@ -162,7 +162,7 @@ const PageAdmin = () => {
 				onClose={handleCloseNewProduct}
 			>
 				<DialogNewProduct
-					handleclosRef={handleCloseNewProduct}
+					handlecloseRef={handleCloseNewProduct}
 					colorRef={colors}
 					loadColorsRef={loadColors}
 					brandRef={brands}
@@ -181,7 +181,7 @@ const PageAdmin = () => {
 				onClose={handleCloseEditProduct}
 			>
 				<DialogNewProduct
-					handleclosRef={handleCloseEditProduct}
+					handlecloseRef={handleCloseEditProduct}
 					colorRef={colors}
 					loadColorsRef={loadColors}
 					brandRef={brands}

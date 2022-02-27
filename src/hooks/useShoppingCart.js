@@ -56,7 +56,10 @@ const useShoppingCart = () => {
 					itemInCart.size.idProduct,
 					itemInCart.size.idSize
 				);
-
+				if (data.message) {
+					haveStock = false;
+					itemInCart.acount = 0;
+				}
 				if (itemInCart.acount > data.stock) {
 					haveStock = false;
 					itemInCart.acount = data.stock;

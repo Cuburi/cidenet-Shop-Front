@@ -45,6 +45,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Checkout = () => {
+	const textEmail =
+		'Muchas gracias por confiar en nosotros y permitirnos acompañarte en tu día a día. Te hemos enviado un correo con la información de la compra.';
 	const classes = useStyles();
 	const navigate = useNavigate();
 	const { isLogged, user, getUserByEmail } = useUser();
@@ -205,7 +207,10 @@ const Checkout = () => {
 				TransitionComponent={Transition}
 				onClose={handleCloseSendEmail}
 			>
-				<DialogSendEmail handleCloseRef={handleCloseSendEmail} />
+				<DialogSendEmail
+					handleCloseRef={handleCloseSendEmail}
+					textRef={textEmail}
+				/>
 			</Dialog>
 			<Dialog
 				open={openErrorStock}

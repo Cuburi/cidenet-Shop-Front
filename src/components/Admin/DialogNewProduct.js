@@ -66,7 +66,7 @@ const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
 });
 
 function DialogNewProduct({
-	handleclosRef,
+	handlecloseRef,
 	colorRef = [],
 	brandRef = [],
 	sectionRef = [],
@@ -136,7 +136,7 @@ function DialogNewProduct({
 				setAddSuccessRef({ error: true, success: false });
 			}
 			loadProductsRef();
-			handleclosRef();
+			handlecloseRef();
 		},
 	});
 
@@ -352,7 +352,7 @@ function DialogNewProduct({
 					)}
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleclosRef}>Cancel</Button>
+					<Button onClick={handlecloseRef}>Cancel</Button>
 					<Button type="submit">Añadir</Button>
 				</DialogActions>
 			</form>
